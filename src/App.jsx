@@ -1458,6 +1458,2430 @@ function IdealWeightPage() {
 }
 
 // ─── WORKOUT DATABASE ─────────────────────────────────────────────
+// Each plan entry: { split: [...7 day names], days: { "DayName": { focus, cardio, exercises:[{name,sets,reps,rest,muscle,tip}] } } }
+
+const WDB = {
+  // ══════════════════════════════════════════════════════
+  // FAT LOSS
+  // ══════════════════════════════════════════════════════
+  "fat-loss|beginner|3|gym": {
+    split:["Full Body","Rest","Full Body","Rest","Full Body","Rest","Rest"],
+    days:{
+      "Full Body":{
+        focus:"Full Body Circuit",
+        cardio:"20 min brisk treadmill walk after workout",
+        exercises:[
+          {name:"Goblet Squat",sets:3,reps:"12-15",rest:"60s",muscle:"Quads/Glutes",tip:"Keep chest tall, push knees out"},
+          {name:"Dumbbell Romanian Deadlift",sets:3,reps:"12",rest:"60s",muscle:"Hamstrings/Glutes",tip:"Hinge at hips, soft knee bend"},
+          {name:"Incline Push-ups / Bench Push-ups",sets:3,reps:"10-15",rest:"60s",muscle:"Chest/Triceps",tip:"Full range of motion"},
+          {name:"Seated Cable Row",sets:3,reps:"12",rest:"60s",muscle:"Back/Biceps",tip:"Squeeze shoulder blades together"},
+          {name:"Dumbbell Shoulder Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Don't flare elbows wide"},
+          {name:"Plank Hold",sets:3,reps:"30-40s",rest:"45s",muscle:"Core",tip:"Straight line from head to heel"},
+          {name:"Jumping Jacks",sets:3,reps:"45s",rest:"30s",muscle:"Cardio/Full Body",tip:"Keep rhythm consistent"},
+        ]
+      }
+    }
+  },
+  "fat-loss|beginner|3|dumbbells": {
+    split:["Full Body","Rest","Full Body","Rest","Full Body","Rest","Rest"],
+    days:{
+      "Full Body":{
+        focus:"Full Body Dumbbell Circuit",
+        cardio:"25 min walk/jog outdoors",
+        exercises:[
+          {name:"DB Goblet Squat",sets:3,reps:"15",rest:"60s",muscle:"Quads/Glutes",tip:"Heels shoulder-width apart"},
+          {name:"DB Romanian Deadlift",sets:3,reps:"12",rest:"60s",muscle:"Hamstrings",tip:"Slow eccentric, 3 seconds down"},
+          {name:"DB Chest Press (Floor)",sets:3,reps:"12",rest:"60s",muscle:"Chest",tip:"Elbows 45° from torso"},
+          {name:"DB Bent-Over Row",sets:3,reps:"12/side",rest:"60s",muscle:"Back",tip:"Keep back flat, row to hip"},
+          {name:"DB Lateral Raise",sets:3,reps:"15",rest:"45s",muscle:"Shoulders",tip:"Slight bend in elbows"},
+          {name:"DB Bicep Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps",tip:"Controlled, don't swing"},
+          {name:"DB Tricep Kickback",sets:3,reps:"12/side",rest:"45s",muscle:"Triceps",tip:"Upper arm parallel to floor"},
+          {name:"Mountain Climbers",sets:3,reps:"40s",rest:"30s",muscle:"Core/Cardio",tip:"Drive knees to chest fast"},
+        ]
+      }
+    }
+  },
+  "fat-loss|beginner|3|home": {
+    split:["Full Body","Rest","Full Body","Rest","Full Body","Rest","Rest"],
+    days:{
+      "Full Body":{
+        focus:"Bodyweight Fat Burn Circuit",
+        cardio:"20 min jog in place or outdoor walk",
+        exercises:[
+          {name:"Bodyweight Squat",sets:3,reps:"20",rest:"45s",muscle:"Quads/Glutes",tip:"Chest up, knees track toes"},
+          {name:"Push-ups (knees if needed)",sets:3,reps:"10-15",rest:"45s",muscle:"Chest/Triceps",tip:"Body straight as a plank"},
+          {name:"Glute Bridge",sets:3,reps:"20",rest:"45s",muscle:"Glutes/Hamstrings",tip:"Squeeze at top for 1 sec"},
+          {name:"Superman Hold",sets:3,reps:"15",rest:"40s",muscle:"Lower Back",tip:"Lift arms and legs together"},
+          {name:"Reverse Lunges",sets:3,reps:"12/leg",rest:"45s",muscle:"Quads/Glutes",tip:"Back knee nearly touches floor"},
+          {name:"Plank",sets:3,reps:"40s",rest:"30s",muscle:"Core",tip:"Breathe steadily, don't sag"},
+          {name:"Burpees",sets:3,reps:"10",rest:"60s",muscle:"Full Body/Cardio",tip:"Chest to floor each rep"},
+          {name:"High Knees",sets:3,reps:"45s",rest:"30s",muscle:"Cardio/Core",tip:"Pump arms, drive knees high"},
+        ]
+      }
+    }
+  },
+  "fat-loss|beginner|3|bands": {
+    split:["Full Body","Rest","Full Body","Rest","Full Body","Rest","Rest"],
+    days:{
+      "Full Body":{
+        focus:"Resistance Band Full Body",
+        cardio:"20 min brisk walk",
+        exercises:[
+          {name:"Band Squat",sets:3,reps:"15",rest:"45s",muscle:"Quads/Glutes",tip:"Stand on band, hold at shoulders"},
+          {name:"Band Deadlift",sets:3,reps:"12",rest:"60s",muscle:"Hamstrings/Back",tip:"Keep band taut at bottom"},
+          {name:"Band Push-up (band across back)",sets:3,reps:"10-12",rest:"60s",muscle:"Chest/Triceps",tip:"Adds extra resistance at top"},
+          {name:"Band Seated Row",sets:3,reps:"12",rest:"60s",muscle:"Back/Biceps",tip:"Loop around feet, sit tall"},
+          {name:"Band Lateral Raise",sets:3,reps:"15",rest:"45s",muscle:"Shoulders",tip:"Control the return"},
+          {name:"Band Curl",sets:3,reps:"15",rest:"45s",muscle:"Biceps",tip:"Full extension at bottom"},
+          {name:"Band Tricep Overhead Press",sets:3,reps:"15",rest:"45s",muscle:"Triceps",tip:"Elbow stays pointing up"},
+          {name:"Jumping Jacks",sets:3,reps:"45s",rest:"30s",muscle:"Cardio",tip:"Keep it rhythmic"},
+        ]
+      }
+    }
+  },
+  // ================= FAT LOSS — BEGINNER =================
+
+// -----------------------------------------------------
+// FAT LOSS | BEGINNER | 4 DAYS | GYM
+// -----------------------------------------------------
+"fat-loss|beginner|4|gym": {
+  split:["Upper","Rest","Lower","Rest","Upper","Rest","Lower"],
+  days:{
+    "Upper":{
+      focus:"Upper Body Fat Loss",
+      cardio:"15 min incline treadmill walk",
+      exercises:[
+        {name:"Machine Chest Press",sets:3,reps:"12",rest:"60s",muscle:"Chest",tip:"Control the lowering phase"},
+        {name:"Lat Pulldown",sets:3,reps:"12",rest:"60s",muscle:"Back",tip:"Pull elbows to ribs"},
+        {name:"Seated DB Shoulder Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Brace core"},
+        {name:"Cable Row",sets:3,reps:"12",rest:"60s",muscle:"Back",tip:"Squeeze shoulder blades"},
+        {name:"DB Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps",tip:"Avoid swinging"},
+        {name:"Cable Tricep Pushdown",sets:3,reps:"12",rest:"45s",muscle:"Triceps",tip:"Lock elbows by sides"},
+        {name:"Battle Rope",sets:3,reps:"30s",rest:"30s",muscle:"Cardio",tip:"Explosive movement"},
+      ]
+    },
+    "Lower":{
+      focus:"Lower Body Fat Burn",
+      cardio:"15 min cycling",
+      exercises:[
+        {name:"Goblet Squat",sets:3,reps:"15",rest:"60s",muscle:"Quads/Glutes",tip:"Chest tall"},
+        {name:"Leg Press",sets:3,reps:"12",rest:"60s",muscle:"Quads",tip:"Push through heels"},
+        {name:"Romanian Deadlift",sets:3,reps:"12",rest:"60s",muscle:"Hamstrings",tip:"Hip hinge movement"},
+        {name:"Walking Lunges",sets:3,reps:"12/leg",rest:"60s",muscle:"Legs",tip:"Long controlled steps"},
+        {name:"Standing Calf Raise",sets:3,reps:"15",rest:"45s",muscle:"Calves",tip:"Pause at top"},
+        {name:"Plank",sets:3,reps:"40s",rest:"30s",muscle:"Core",tip:"Keep body straight"},
+        {name:"Jump Rope",sets:3,reps:"45s",rest:"30s",muscle:"Cardio",tip:"Stay light on feet"},
+      ]
+    }
+  }
+},
+
+// -----------------------------------------------------
+// FAT LOSS | BEGINNER | 5 DAYS | GYM
+// -----------------------------------------------------
+"fat-loss|beginner|5|gym": {
+  split:["Push","Pull","Legs","Rest","Upper","Lower","Rest"],
+  days:{
+    "Push":{
+      focus:"Push Fat Loss",
+      cardio:"10 min incline walk",
+      exercises:[
+        {name:"Bench Press",sets:3,reps:"12",rest:"60s",muscle:"Chest",tip:"Control every rep"},
+        {name:"Incline DB Press",sets:3,reps:"12",rest:"60s",muscle:"Upper Chest",tip:"Don't lock elbows"},
+        {name:"Shoulder Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Brace core"},
+        {name:"Cable Lateral Raise",sets:3,reps:"15",rest:"45s",muscle:"Shoulders",tip:"Raise to shoulder level"},
+        {name:"Tricep Pushdown",sets:3,reps:"15",rest:"45s",muscle:"Triceps",tip:"Elbows fixed"},
+      ]
+    },
+    "Pull":{
+      focus:"Pull Fat Burn",
+      cardio:"10 min rowing",
+      exercises:[
+        {name:"Lat Pulldown",sets:3,reps:"12",rest:"60s",muscle:"Back",tip:"Chest up"},
+        {name:"Seated Cable Row",sets:3,reps:"12",rest:"60s",muscle:"Back",tip:"Pull to waist"},
+        {name:"Face Pull",sets:3,reps:"15",rest:"45s",muscle:"Rear Delts",tip:"Pull toward forehead"},
+        {name:"DB Hammer Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps",tip:"Neutral grip"},
+        {name:"Mountain Climbers",sets:3,reps:"40s",rest:"30s",muscle:"Cardio/Core",tip:"Fast pace"},
+      ]
+    },
+    "Legs":{
+      focus:"Leg Fat Burn",
+      cardio:"15 min cycling",
+      exercises:[
+        {name:"Squat",sets:3,reps:"12",rest:"60s",muscle:"Legs",tip:"Depth below parallel"},
+        {name:"Leg Press",sets:3,reps:"15",rest:"60s",muscle:"Quads",tip:"Don't lock knees"},
+        {name:"Romanian Deadlift",sets:3,reps:"12",rest:"60s",muscle:"Hamstrings",tip:"Slow lowering"},
+        {name:"Walking Lunges",sets:3,reps:"12/leg",rest:"60s",muscle:"Legs",tip:"Stay balanced"},
+        {name:"Standing Calf Raise",sets:3,reps:"15",rest:"45s",muscle:"Calves",tip:"Full stretch"},
+      ]
+    },
+    "Upper":{
+      focus:"Upper Conditioning",
+      cardio:"15 min treadmill",
+      exercises:[
+        {name:"Push-ups",sets:3,reps:"15",rest:"45s",muscle:"Chest",tip:"Full range"},
+        {name:"Cable Row",sets:3,reps:"12",rest:"60s",muscle:"Back",tip:"Controlled reps"},
+        {name:"DB Shoulder Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"No momentum"},
+        {name:"EZ Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps",tip:"Control lowering"},
+        {name:"Battle Rope",sets:3,reps:"30s",rest:"30s",muscle:"Cardio",tip:"Explosive waves"},
+      ]
+    },
+    "Lower":{
+      focus:"Lower Conditioning",
+      cardio:"15 min incline walk",
+      exercises:[
+        {name:"Goblet Squat",sets:3,reps:"15",rest:"60s",muscle:"Legs",tip:"Chest tall"},
+        {name:"Step-ups",sets:3,reps:"12/leg",rest:"45s",muscle:"Legs",tip:"Drive through heel"},
+        {name:"Hip Thrust",sets:3,reps:"12",rest:"60s",muscle:"Glutes",tip:"Pause at top"},
+        {name:"Leg Curl",sets:3,reps:"12",rest:"45s",muscle:"Hamstrings",tip:"Slow reps"},
+        {name:"Plank",sets:3,reps:"45s",rest:"30s",muscle:"Core",tip:"Tight core"},
+      ]
+    }
+  }
+},
+
+// -----------------------------------------------------
+// FAT LOSS | BEGINNER | 6 DAYS | GYM
+// -----------------------------------------------------
+"fat-loss|beginner|6|gym": {
+  split:["Push","Pull","Legs","Push","Pull","Legs","Rest"],
+  days:{
+    "Push":{
+      focus:"Push Hypertrophy + Fat Loss",
+      cardio:"10 min treadmill",
+      exercises:[
+        {name:"Bench Press",sets:4,reps:"10-12",rest:"60s",muscle:"Chest",tip:"Control reps"},
+        {name:"Incline DB Press",sets:3,reps:"12",rest:"60s",muscle:"Upper Chest",tip:"Stretch fully"},
+        {name:"Shoulder Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Brace core"},
+        {name:"Cable Lateral Raise",sets:3,reps:"15",rest:"45s",muscle:"Side Delts",tip:"Slow lowering"},
+        {name:"Tricep Pushdown",sets:3,reps:"15",rest:"45s",muscle:"Triceps",tip:"Elbows tucked"},
+      ]
+    },
+    "Pull":{
+      focus:"Pull Hypertrophy + Fat Loss",
+      cardio:"10 min rowing",
+      exercises:[
+        {name:"Lat Pulldown",sets:4,reps:"12",rest:"60s",muscle:"Back",tip:"Chest up"},
+        {name:"Cable Row",sets:3,reps:"12",rest:"60s",muscle:"Back",tip:"Pull elbows back"},
+        {name:"Face Pull",sets:3,reps:"15",rest:"45s",muscle:"Rear Delts",tip:"High elbows"},
+        {name:"DB Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps",tip:"Slow eccentric"},
+        {name:"Hammer Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps",tip:"Neutral grip"},
+      ]
+    },
+    "Legs":{
+      focus:"Leg Fat Burn",
+      cardio:"15 min cycling",
+      exercises:[
+        {name:"Squat",sets:4,reps:"10-12",rest:"60s",muscle:"Legs",tip:"Push knees out"},
+        {name:"Leg Press",sets:3,reps:"15",rest:"60s",muscle:"Quads",tip:"Don't lock knees"},
+        {name:"Romanian Deadlift",sets:3,reps:"12",rest:"60s",muscle:"Hamstrings",tip:"Hip hinge"},
+        {name:"Walking Lunges",sets:3,reps:"12/leg",rest:"60s",muscle:"Legs",tip:"Stay upright"},
+        {name:"Standing Calf Raise",sets:3,reps:"20",rest:"45s",muscle:"Calves",tip:"Pause at top"},
+        {name:"Hanging Knee Raise",sets:3,reps:"15",rest:"30s",muscle:"Core",tip:"Control movement"},
+      ]
+    }
+  }
+}, 
+ // =====================================================
+// FAT LOSS | BEGINNER | 4 DAYS | DUMBBELLS
+// =====================================================
+"fat-loss|beginner|4|dumbbells": {
+  split:["Upper","Rest","Lower","Rest","Upper","Rest","Lower"],
+  days:{
+    "Upper":{
+      focus:"Upper Body Dumbbell Fat Loss",
+      cardio:"20 min brisk walk",
+      exercises:[
+        {name:"DB Floor Press",sets:3,reps:"12",rest:"60s",muscle:"Chest",tip:"Control lowering"},
+        {name:"DB Bent Over Row",sets:3,reps:"12",rest:"60s",muscle:"Back",tip:"Back flat"},
+        {name:"DB Shoulder Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Brace core"},
+        {name:"DB Lateral Raise",sets:3,reps:"15",rest:"45s",muscle:"Shoulders",tip:"Small controlled reps"},
+        {name:"DB Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps",tip:"No swinging"},
+        {name:"DB Overhead Tricep Extension",sets:3,reps:"12",rest:"45s",muscle:"Triceps",tip:"Keep elbows fixed"},
+      ]
+    },
+    "Lower":{
+      focus:"Lower Body Dumbbell Fat Burn",
+      cardio:"15 min jogging",
+      exercises:[
+        {name:"DB Goblet Squat",sets:3,reps:"15",rest:"60s",muscle:"Quads/Glutes",tip:"Chest upright"},
+        {name:"DB Romanian Deadlift",sets:3,reps:"12",rest:"60s",muscle:"Hamstrings",tip:"Slow lowering"},
+        {name:"DB Walking Lunges",sets:3,reps:"12/leg",rest:"60s",muscle:"Legs",tip:"Long stride"},
+        {name:"DB Step-ups",sets:3,reps:"12/leg",rest:"45s",muscle:"Legs",tip:"Drive through heel"},
+        {name:"Standing Calf Raise",sets:3,reps:"20",rest:"30s",muscle:"Calves",tip:"Pause at top"},
+        {name:"Plank",sets:3,reps:"45s",rest:"30s",muscle:"Core",tip:"Tight core"},
+      ]
+    }
+  }
+},
+
+// =====================================================
+// FAT LOSS | BEGINNER | 5 DAYS | DUMBBELLS
+// =====================================================
+"fat-loss|beginner|5|dumbbells": {
+  split:["Push","Pull","Legs","Rest","Upper","Lower","Rest"],
+  days:{
+    "Push":{
+      focus:"Push Dumbbell Workout",
+      cardio:"10 min walk",
+      exercises:[
+        {name:"DB Floor Press",sets:3,reps:"12",rest:"60s",muscle:"Chest",tip:"Full range"},
+        {name:"Incline DB Press",sets:3,reps:"12",rest:"60s",muscle:"Upper Chest",tip:"Controlled reps"},
+        {name:"DB Shoulder Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"No momentum"},
+        {name:"DB Lateral Raise",sets:3,reps:"15",rest:"45s",muscle:"Side Delts",tip:"Lift to shoulder height"},
+        {name:"DB Skull Crusher",sets:3,reps:"12",rest:"45s",muscle:"Triceps",tip:"Elbows stable"},
+      ]
+    },
+    "Pull":{
+      focus:"Pull Dumbbell Workout",
+      cardio:"10 min jog",
+      exercises:[
+        {name:"DB Bent Over Row",sets:3,reps:"12",rest:"60s",muscle:"Back",tip:"Flat back"},
+        {name:"Single Arm DB Row",sets:3,reps:"12/side",rest:"60s",muscle:"Lats",tip:"Pull to hip"},
+        {name:"DB Rear Delt Fly",sets:3,reps:"15",rest:"45s",muscle:"Rear Delts",tip:"Light weight"},
+        {name:"DB Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps",tip:"Slow eccentric"},
+        {name:"Hammer Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps",tip:"Neutral grip"},
+      ]
+    },
+    "Legs":{
+      focus:"Dumbbell Leg Fat Burn",
+      cardio:"15 min cycling",
+      exercises:[
+        {name:"DB Goblet Squat",sets:4,reps:"12",rest:"60s",muscle:"Legs",tip:"Depth below parallel"},
+        {name:"DB Romanian Deadlift",sets:3,reps:"12",rest:"60s",muscle:"Hamstrings",tip:"Hip hinge"},
+        {name:"DB Walking Lunges",sets:3,reps:"12/leg",rest:"60s",muscle:"Legs",tip:"Stay balanced"},
+        {name:"DB Step-up",sets:3,reps:"12/leg",rest:"45s",muscle:"Quads",tip:"Control descent"},
+        {name:"Standing Calf Raise",sets:3,reps:"20",rest:"30s",muscle:"Calves",tip:"Pause at top"},
+      ]
+    },
+    "Upper":{
+      focus:"Upper Conditioning",
+      cardio:"15 min brisk walk",
+      exercises:[
+        {name:"Push-ups",sets:3,reps:"15",rest:"45s",muscle:"Chest",tip:"Body straight"},
+        {name:"DB Row",sets:3,reps:"12",rest:"60s",muscle:"Back",tip:"Squeeze lats"},
+        {name:"DB Shoulder Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Controlled reps"},
+        {name:"DB Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps",tip:"No swinging"},
+        {name:"Mountain Climbers",sets:3,reps:"40s",rest:"30s",muscle:"Core/Cardio",tip:"Fast pace"},
+      ]
+    },
+    "Lower":{
+      focus:"Lower Conditioning",
+      cardio:"15 min jog",
+      exercises:[
+        {name:"DB Squat",sets:3,reps:"15",rest:"60s",muscle:"Legs",tip:"Chest tall"},
+        {name:"DB Lunges",sets:3,reps:"12/leg",rest:"45s",muscle:"Legs",tip:"Controlled reps"},
+        {name:"DB Hip Thrust",sets:3,reps:"12",rest:"60s",muscle:"Glutes",tip:"Pause at top"},
+        {name:"Glute Bridge",sets:3,reps:"15",rest:"45s",muscle:"Glutes",tip:"Squeeze hard"},
+        {name:"Plank",sets:3,reps:"45s",rest:"30s",muscle:"Core",tip:"Keep hips level"},
+      ]
+    }
+  }
+},
+
+// =====================================================
+// FAT LOSS | BEGINNER | 6 DAYS | DUMBBELLS
+// =====================================================
+"fat-loss|beginner|6|dumbbells": {
+  split:["Push","Pull","Legs","Push","Pull","Legs","Rest"],
+  days:{
+    "Push":{
+      focus:"Push Dumbbell Hypertrophy",
+      cardio:"10 min walk",
+      exercises:[
+        {name:"DB Floor Press",sets:4,reps:"10-12",rest:"60s",muscle:"Chest",tip:"Slow eccentric"},
+        {name:"Incline DB Press",sets:3,reps:"12",rest:"60s",muscle:"Chest",tip:"Deep stretch"},
+        {name:"DB Shoulder Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Brace core"},
+        {name:"DB Lateral Raise",sets:3,reps:"15",rest:"45s",muscle:"Side Delts",tip:"Controlled motion"},
+        {name:"DB Tricep Extension",sets:3,reps:"12",rest:"45s",muscle:"Triceps",tip:"Elbows stable"},
+      ]
+    },
+    "Pull":{
+      focus:"Pull Dumbbell Hypertrophy",
+      cardio:"10 min jogging",
+      exercises:[
+        {name:"DB Bent Over Row",sets:4,reps:"12",rest:"60s",muscle:"Back",tip:"Back neutral"},
+        {name:"Single Arm DB Row",sets:3,reps:"12/side",rest:"60s",muscle:"Lats",tip:"Row to hip"},
+        {name:"DB Rear Delt Fly",sets:3,reps:"15",rest:"45s",muscle:"Rear Delts",tip:"Light weight"},
+        {name:"DB Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps",tip:"Slow lowering"},
+        {name:"Hammer Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps",tip:"Neutral grip"},
+      ]
+    },
+    "Legs":{
+      focus:"Leg Fat Burn",
+      cardio:"15 min cycling",
+      exercises:[
+        {name:"DB Goblet Squat",sets:4,reps:"12",rest:"60s",muscle:"Legs",tip:"Push knees out"},
+        {name:"DB Romanian Deadlift",sets:3,reps:"12",rest:"60s",muscle:"Hamstrings",tip:"Hip hinge"},
+        {name:"DB Walking Lunges",sets:3,reps:"12/leg",rest:"60s",muscle:"Legs",tip:"Stay upright"},
+        {name:"DB Step-up",sets:3,reps:"12/leg",rest:"45s",muscle:"Quads",tip:"Drive through heel"},
+        {name:"Standing Calf Raise",sets:3,reps:"20",rest:"30s",muscle:"Calves",tip:"Pause at top"},
+        {name:"Plank",sets:3,reps:"45s",rest:"30s",muscle:"Core",tip:"Tight core"},
+      ]
+    }
+  }
+},  
+
+  "fat-loss|intermediate|4|gym": {
+    split:["Upper Body","Lower Body","Rest","Upper Body","Lower Body","Rest","Rest"],
+    days:{
+      "Upper Body":{
+        focus:"Upper Body Superset Circuit",
+        cardio:"15 min HIIT treadmill (1min sprint / 2min walk)",
+        exercises:[
+          {name:"Barbell Bench Press",sets:4,reps:"10-12",rest:"75s",muscle:"Chest",tip:"Control descent 2 seconds"},
+          {name:"Cable Row (Superset with Bench)",sets:4,reps:"10-12",rest:"75s",muscle:"Back",tip:"Superset for max calorie burn"},
+          {name:"Incline DB Press",sets:3,reps:"12",rest:"60s",muscle:"Upper Chest",tip:"30–45° incline"},
+          {name:"Lat Pulldown",sets:3,reps:"12",rest:"60s",muscle:"Back/Lats",tip:"Pull to upper chest"},
+          {name:"Dumbbell Shoulder Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Neutral grip for shoulder health"},
+          {name:"Cable Lateral Raise",sets:3,reps:"15",rest:"45s",muscle:"Side Delts",tip:"Unilateral for focus"},
+          {name:"EZ-Bar Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps",tip:"Don't swing"},
+          {name:"Tricep Rope Pushdown",sets:3,reps:"12",rest:"45s",muscle:"Triceps",tip:"Spread rope at bottom"},
+        ]
+      },
+      "Lower Body":{
+        focus:"Lower Body Fat Blaster",
+        cardio:"20 min stairmill or cycling",
+        exercises:[
+          {name:"Barbell Back Squat",sets:4,reps:"10-12",rest:"90s",muscle:"Quads/Glutes",tip:"Break parallel for full glute activation"},
+          {name:"Romanian Deadlift",sets:4,reps:"10",rest:"90s",muscle:"Hamstrings/Glutes",tip:"Feel the hamstring stretch"},
+          {name:"Leg Press",sets:3,reps:"15",rest:"75s",muscle:"Quads",tip:"High foot placement targets glutes"},
+          {name:"Leg Curl (Machine)",sets:3,reps:"12",rest:"60s",muscle:"Hamstrings",tip:"Full contraction at top"},
+          {name:"Walking Lunges",sets:3,reps:"20 steps",rest:"60s",muscle:"Quads/Glutes",tip:"Long stride for glutes"},
+          {name:"Calf Raise (Smith Machine)",sets:4,reps:"20",rest:"45s",muscle:"Calves",tip:"Full range, pause at top"},
+          {name:"Cable Kickback",sets:3,reps:"15/side",rest:"45s",muscle:"Glutes",tip:"Keep hips square"},
+          {name:"Hanging Leg Raise",sets:3,reps:"15",rest:"45s",muscle:"Core/Lower Abs",tip:"Control the swing"},
+        ]
+      }
+    }
+  },
+
+  "fat-loss|intermediate|4|dumbbells": {
+    split:["Upper Body","Lower Body","Rest","Upper Body","Lower Body","Rest","Rest"],
+    days:{
+      "Upper Body":{
+        focus:"DB Upper Body Superset",
+        cardio:"15 min HIIT intervals (30s on / 30s off)",
+        exercises:[
+          {name:"DB Bench Press",sets:4,reps:"10-12",rest:"75s",muscle:"Chest",tip:"Full stretch at bottom"},
+          {name:"DB Bent-Over Row",sets:4,reps:"10-12",rest:"75s",muscle:"Back",tip:"Superset with bench press"},
+          {name:"DB Incline Press",sets:3,reps:"12",rest:"60s",muscle:"Upper Chest",tip:"Controlled tempo"},
+          {name:"DB Single Arm Row",sets:3,reps:"12/side",rest:"60s",muscle:"Back",tip:"Rotate torso slightly"},
+          {name:"DB Arnold Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Full rotation movement"},
+          {name:"DB Lateral Raise",sets:3,reps:"15",rest:"45s",muscle:"Side Delts",tip:"Thumbs slightly down"},
+          {name:"DB Hammer Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps/Brachialis",tip:"Neutral grip throughout"},
+          {name:"DB Skull Crusher",sets:3,reps:"12",rest:"45s",muscle:"Triceps",tip:"Elbows stay fixed"},
+        ]
+      },
+      "Lower Body":{
+        focus:"DB Lower Body Burn",
+        cardio:"20 min jump rope or stair climbing",
+        exercises:[
+          {name:"DB Goblet Squat",sets:4,reps:"15",rest:"75s",muscle:"Quads/Glutes",tip:"Elbows inside knees at bottom"},
+          {name:"DB Romanian Deadlift",sets:4,reps:"12",rest:"75s",muscle:"Hamstrings",tip:"Hip hinge, not a squat"},
+          {name:"DB Reverse Lunge",sets:3,reps:"12/leg",rest:"60s",muscle:"Quads/Glutes",tip:"Front shin stays vertical"},
+          {name:"DB Sumo Squat",sets:3,reps:"15",rest:"60s",muscle:"Inner Thigh/Glutes",tip:"Wide stance, toes out 45°"},
+          {name:"DB Step-ups",sets:3,reps:"12/leg",rest:"60s",muscle:"Quads/Glutes",tip:"Drive through heel"},
+          {name:"Single-Leg DB Deadlift",sets:3,reps:"10/leg",rest:"60s",muscle:"Hamstrings/Balance",tip:"Keep hips level"},
+          {name:"Calf Raise (DB)",sets:4,reps:"20",rest:"45s",muscle:"Calves",tip:"Hold DBs at sides"},
+          {name:"Ab Crunch",sets:3,reps:"20",rest:"30s",muscle:"Core",tip:"Exhale at top"},
+        ]
+      }
+    }
+  },
+// =====================================================
+// FAT LOSS | BEGINNER | 4 DAYS | BANDS
+// =====================================================
+"fat-loss|beginner|4|bands": {
+  split:["Upper","Rest","Lower","Rest","Upper","Rest","Lower"],
+  days:{
+    "Upper":{
+      focus:"Upper Body Resistance Band Fat Loss",
+      cardio:"20 min brisk walk",
+      exercises:[
+        {name:"Band Chest Press",sets:3,reps:"12-15",rest:"60s",muscle:"Chest",tip:"Press explosively, return slowly"},
+        {name:"Band Seated Row",sets:3,reps:"12",rest:"60s",muscle:"Back",tip:"Squeeze shoulder blades"},
+        {name:"Band Shoulder Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Keep core tight"},
+        {name:"Band Lateral Raise",sets:3,reps:"15",rest:"45s",muscle:"Shoulders",tip:"Control the lowering"},
+        {name:"Band Curl",sets:3,reps:"15",rest:"45s",muscle:"Biceps",tip:"Full extension at bottom"},
+        {name:"Band Overhead Tricep Extension",sets:3,reps:"15",rest:"45s",muscle:"Triceps",tip:"Keep elbows pointing up"},
+      ]
+    },
+    "Lower":{
+      focus:"Lower Body Band Fat Burn",
+      cardio:"15 min jogging",
+      exercises:[
+        {name:"Band Squat",sets:3,reps:"15",rest:"60s",muscle:"Quads/Glutes",tip:"Push knees outward"},
+        {name:"Band Romanian Deadlift",sets:3,reps:"12",rest:"60s",muscle:"Hamstrings",tip:"Hinge from hips"},
+        {name:"Band Reverse Lunges",sets:3,reps:"12/leg",rest:"60s",muscle:"Legs",tip:"Controlled movement"},
+        {name:"Band Glute Bridge",sets:3,reps:"15",rest:"45s",muscle:"Glutes",tip:"Pause at top"},
+        {name:"Band Standing Calf Raise",sets:3,reps:"20",rest:"30s",muscle:"Calves",tip:"Slow tempo"},
+        {name:"Plank",sets:3,reps:"45s",rest:"30s",muscle:"Core",tip:"Maintain straight body line"},
+      ]
+    }
+  }
+},
+
+// =====================================================
+// FAT LOSS | BEGINNER | 5 DAYS | BANDS
+// =====================================================
+"fat-loss|beginner|5|bands": {
+  split:["Push","Pull","Legs","Rest","Upper","Lower","Rest"],
+  days:{
+    "Push":{
+      focus:"Push Resistance Band Workout",
+      cardio:"10 min brisk walk",
+      exercises:[
+        {name:"Band Chest Press",sets:3,reps:"12-15",rest:"60s",muscle:"Chest",tip:"Keep tension throughout"},
+        {name:"Band Incline Press",sets:3,reps:"12",rest:"60s",muscle:"Upper Chest",tip:"Press upward angle"},
+        {name:"Band Shoulder Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Brace core"},
+        {name:"Band Lateral Raise",sets:3,reps:"15",rest:"45s",muscle:"Side Delts",tip:"Lift to shoulder height"},
+        {name:"Band Tricep Pushdown",sets:3,reps:"15",rest:"45s",muscle:"Triceps",tip:"Elbows fixed"},
+      ]
+    },
+    "Pull":{
+      focus:"Pull Resistance Band Workout",
+      cardio:"10 min jog",
+      exercises:[
+        {name:"Band Seated Row",sets:3,reps:"12",rest:"60s",muscle:"Back",tip:"Pull elbows back"},
+        {name:"Single Arm Band Row",sets:3,reps:"12/side",rest:"60s",muscle:"Lats",tip:"Row toward hip"},
+        {name:"Band Face Pull",sets:3,reps:"15",rest:"45s",muscle:"Rear Delts",tip:"Pull toward forehead"},
+        {name:"Band Curl",sets:3,reps:"15",rest:"45s",muscle:"Biceps",tip:"Control eccentric"},
+        {name:"Hammer Band Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps",tip:"Neutral wrist position"},
+      ]
+    },
+    "Legs":{
+      focus:"Band Leg Fat Burn",
+      cardio:"15 min cycling or jogging",
+      exercises:[
+        {name:"Band Squat",sets:4,reps:"15",rest:"60s",muscle:"Legs",tip:"Drive through heels"},
+        {name:"Band Romanian Deadlift",sets:3,reps:"12",rest:"60s",muscle:"Hamstrings",tip:"Keep spine neutral"},
+        {name:"Band Walking Lunges",sets:3,reps:"12/leg",rest:"60s",muscle:"Legs",tip:"Long controlled steps"},
+        {name:"Band Glute Bridge",sets:3,reps:"15",rest:"45s",muscle:"Glutes",tip:"Squeeze hard at top"},
+        {name:"Band Standing Calf Raise",sets:3,reps:"20",rest:"30s",muscle:"Calves",tip:"Pause at top"},
+      ]
+    },
+    "Upper":{
+      focus:"Upper Body Conditioning",
+      cardio:"15 min brisk walk",
+      exercises:[
+        {name:"Band Push-up",sets:3,reps:"12",rest:"45s",muscle:"Chest",tip:"Full range of motion"},
+        {name:"Band Row",sets:3,reps:"12",rest:"60s",muscle:"Back",tip:"Squeeze lats"},
+        {name:"Band Shoulder Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Controlled reps"},
+        {name:"Band Curl",sets:3,reps:"15",rest:"45s",muscle:"Biceps",tip:"No momentum"},
+        {name:"Mountain Climbers",sets:3,reps:"40s",rest:"30s",muscle:"Core/Cardio",tip:"Fast pace"},
+      ]
+    },
+    "Lower":{
+      focus:"Lower Body Conditioning",
+      cardio:"15 min jogging",
+      exercises:[
+        {name:"Band Squat",sets:3,reps:"15",rest:"60s",muscle:"Legs",tip:"Chest tall"},
+        {name:"Band Reverse Lunges",sets:3,reps:"12/leg",rest:"45s",muscle:"Legs",tip:"Slow reps"},
+        {name:"Band Hip Thrust",sets:3,reps:"15",rest:"60s",muscle:"Glutes",tip:"Pause at top"},
+        {name:"Band Glute Bridge",sets:3,reps:"15",rest:"45s",muscle:"Glutes",tip:"Maintain tension"},
+        {name:"Plank",sets:3,reps:"45s",rest:"30s",muscle:"Core",tip:"Keep hips level"},
+      ]
+    }
+  }
+},
+
+// =====================================================
+// FAT LOSS | BEGINNER | 6 DAYS | BANDS
+// =====================================================
+"fat-loss|beginner|6|bands": {
+  split:["Push","Pull","Legs","Push","Pull","Legs","Rest"],
+  days:{
+    "Push":{
+      focus:"Push Band Hypertrophy",
+      cardio:"10 min brisk walk",
+      exercises:[
+        {name:"Band Chest Press",sets:4,reps:"12",rest:"60s",muscle:"Chest",tip:"Control return"},
+        {name:"Band Incline Press",sets:3,reps:"12",rest:"60s",muscle:"Upper Chest",tip:"Stretch fully"},
+        {name:"Band Shoulder Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Brace core"},
+        {name:"Band Lateral Raise",sets:3,reps:"15",rest:"45s",muscle:"Side Delts",tip:"Slow lowering"},
+        {name:"Band Overhead Tricep Extension",sets:3,reps:"15",rest:"45s",muscle:"Triceps",tip:"Elbows stable"},
+      ]
+    },
+    "Pull":{
+      focus:"Pull Band Hypertrophy",
+      cardio:"10 min jogging",
+      exercises:[
+        {name:"Band Seated Row",sets:4,reps:"12",rest:"60s",muscle:"Back",tip:"Pull elbows back"},
+        {name:"Single Arm Band Row",sets:3,reps:"12/side",rest:"60s",muscle:"Lats",tip:"Row to hip"},
+        {name:"Band Face Pull",sets:3,reps:"15",rest:"45s",muscle:"Rear Delts",tip:"High elbows"},
+        {name:"Band Curl",sets:3,reps:"15",rest:"45s",muscle:"Biceps",tip:"Controlled movement"},
+        {name:"Hammer Band Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps",tip:"Neutral grip"},
+      ]
+    },
+    "Legs":{
+      focus:"Band Leg Fat Burn",
+      cardio:"15 min cycling or jogging",
+      exercises:[
+        {name:"Band Squat",sets:4,reps:"15",rest:"60s",muscle:"Legs",tip:"Push knees outward"},
+        {name:"Band Romanian Deadlift",sets:3,reps:"12",rest:"60s",muscle:"Hamstrings",tip:"Hip hinge properly"},
+        {name:"Band Walking Lunges",sets:3,reps:"12/leg",rest:"60s",muscle:"Legs",tip:"Stay upright"},
+        {name:"Band Hip Thrust",sets:3,reps:"15",rest:"45s",muscle:"Glutes",tip:"Pause at top"},
+        {name:"Band Standing Calf Raise",sets:3,reps:"20",rest:"30s",muscle:"Calves",tip:"Full stretch"},
+        {name:"Plank",sets:3,reps:"45s",rest:"30s",muscle:"Core",tip:"Keep abs tight"},
+      ]
+    }
+  }
+},
+
+
+// =====================================================
+// FAT LOSS | BEGINNER | 4 DAYS | HOME
+// =====================================================
+"fat-loss|beginner|4|home": {
+  split:["Upper","Rest","Lower","Rest","Upper","Rest","Lower"],
+  days:{
+    "Upper":{
+      focus:"Upper Body Home Fat Loss",
+      cardio:"20 min brisk walk or jog",
+      exercises:[
+        {name:"Push-ups (knees if needed)",sets:3,reps:"10-15",rest:"45s",muscle:"Chest/Triceps",tip:"Body straight like plank"},
+        {name:"Pike Push-ups",sets:3,reps:"10-12",rest:"45s",muscle:"Shoulders",tip:"Push head toward floor"},
+        {name:"Superman Hold",sets:3,reps:"15",rest:"40s",muscle:"Lower Back",tip:"Lift arms and legs together"},
+        {name:"Chair Dips",sets:3,reps:"12",rest:"45s",muscle:"Triceps",tip:"Lower slowly"},
+        {name:"Arm Circles",sets:3,reps:"40s",rest:"30s",muscle:"Shoulders",tip:"Maintain constant motion"},
+        {name:"Plank Shoulder Taps",sets:3,reps:"20",rest:"30s",muscle:"Core",tip:"Keep hips stable"},
+      ]
+    },
+    "Lower":{
+      focus:"Lower Body Home Fat Burn",
+      cardio:"15 min jogging or stair climbing",
+      exercises:[
+        {name:"Bodyweight Squat",sets:3,reps:"20",rest:"45s",muscle:"Quads/Glutes",tip:"Chest up"},
+        {name:"Reverse Lunges",sets:3,reps:"12/leg",rest:"45s",muscle:"Legs",tip:"Control each rep"},
+        {name:"Glute Bridge",sets:3,reps:"20",rest:"45s",muscle:"Glutes",tip:"Pause at top"},
+        {name:"Wall Sit",sets:3,reps:"40s",rest:"30s",muscle:"Quads",tip:"Keep thighs parallel"},
+        {name:"Calf Raises",sets:3,reps:"20",rest:"30s",muscle:"Calves",tip:"Full stretch"},
+        {name:"Mountain Climbers",sets:3,reps:"40s",rest:"30s",muscle:"Core/Cardio",tip:"Fast pace"},
+      ]
+    }
+  }
+},
+
+// =====================================================
+// FAT LOSS | BEGINNER | 5 DAYS | HOME
+// =====================================================
+"fat-loss|beginner|5|home": {
+  split:["Push","Pull","Legs","Rest","Upper","Lower","Rest"],
+  days:{
+    "Push":{
+      focus:"Push Bodyweight Workout",
+      cardio:"10 min brisk walk",
+      exercises:[
+        {name:"Push-ups",sets:3,reps:"12-15",rest:"45s",muscle:"Chest",tip:"Full range of motion"},
+        {name:"Incline Push-ups",sets:3,reps:"15",rest:"45s",muscle:"Upper Chest",tip:"Controlled reps"},
+        {name:"Pike Push-ups",sets:3,reps:"10-12",rest:"45s",muscle:"Shoulders",tip:"Push vertically"},
+        {name:"Chair Dips",sets:3,reps:"12",rest:"45s",muscle:"Triceps",tip:"Lower slowly"},
+        {name:"Burpees",sets:3,reps:"10",rest:"60s",muscle:"Full Body/Cardio",tip:"Explosive movement"},
+      ]
+    },
+    "Pull":{
+      focus:"Pull Bodyweight Workout",
+      cardio:"10 min jogging",
+      exercises:[
+        {name:"Superman Hold",sets:3,reps:"15",rest:"40s",muscle:"Lower Back",tip:"Lift chest and legs"},
+        {name:"Reverse Snow Angels",sets:3,reps:"15",rest:"40s",muscle:"Upper Back",tip:"Controlled motion"},
+        {name:"Towel Rows",sets:3,reps:"12",rest:"45s",muscle:"Back",tip:"Pull elbows back"},
+        {name:"Doorway Rows",sets:3,reps:"10-12",rest:"45s",muscle:"Lats",tip:"Lean back carefully"},
+        {name:"Mountain Climbers",sets:3,reps:"40s",rest:"30s",muscle:"Core/Cardio",tip:"Maintain speed"},
+      ]
+    },
+    "Legs":{
+      focus:"Leg Fat Burn",
+      cardio:"15 min stair climbing",
+      exercises:[
+        {name:"Bodyweight Squat",sets:4,reps:"20",rest:"45s",muscle:"Legs",tip:"Push knees outward"},
+        {name:"Walking Lunges",sets:3,reps:"12/leg",rest:"45s",muscle:"Legs",tip:"Long steps"},
+        {name:"Glute Bridge",sets:3,reps:"20",rest:"45s",muscle:"Glutes",tip:"Squeeze hard"},
+        {name:"Wall Sit",sets:3,reps:"45s",rest:"30s",muscle:"Quads",tip:"Stay low"},
+        {name:"Calf Raises",sets:3,reps:"20",rest:"30s",muscle:"Calves",tip:"Pause at top"},
+      ]
+    },
+    "Upper":{
+      focus:"Upper Body Conditioning",
+      cardio:"15 min brisk walk",
+      exercises:[
+        {name:"Push-ups",sets:3,reps:"15",rest:"45s",muscle:"Chest",tip:"Controlled movement"},
+        {name:"Pike Push-ups",sets:3,reps:"12",rest:"45s",muscle:"Shoulders",tip:"Keep hips high"},
+        {name:"Chair Dips",sets:3,reps:"12",rest:"45s",muscle:"Triceps",tip:"Slow eccentric"},
+        {name:"Superman Hold",sets:3,reps:"15",rest:"40s",muscle:"Back",tip:"Lift fully"},
+        {name:"High Knees",sets:3,reps:"45s",rest:"30s",muscle:"Cardio",tip:"Drive knees high"},
+      ]
+    },
+    "Lower":{
+      focus:"Lower Body Conditioning",
+      cardio:"15 min jogging",
+      exercises:[
+        {name:"Squats",sets:3,reps:"20",rest:"45s",muscle:"Legs",tip:"Chest upright"},
+        {name:"Reverse Lunges",sets:3,reps:"12/leg",rest:"45s",muscle:"Legs",tip:"Controlled reps"},
+        {name:"Single Leg Glute Bridge",sets:3,reps:"12/leg",rest:"45s",muscle:"Glutes",tip:"Squeeze at top"},
+        {name:"Wall Sit",sets:3,reps:"45s",rest:"30s",muscle:"Quads",tip:"Maintain tension"},
+        {name:"Plank",sets:3,reps:"45s",rest:"30s",muscle:"Core",tip:"Straight body line"},
+      ]
+    }
+  }
+},
+
+// =====================================================
+// FAT LOSS | BEGINNER | 6 DAYS | HOME
+// =====================================================
+"fat-loss|beginner|6|home": {
+  split:["Push","Pull","Legs","Push","Pull","Legs","Rest"],
+  days:{
+    "Push":{
+      focus:"Push Bodyweight Hypertrophy",
+      cardio:"10 min brisk walk",
+      exercises:[
+        {name:"Push-ups",sets:4,reps:"12-15",rest:"45s",muscle:"Chest",tip:"Slow eccentric"},
+        {name:"Incline Push-ups",sets:3,reps:"15",rest:"45s",muscle:"Upper Chest",tip:"Full stretch"},
+        {name:"Pike Push-ups",sets:3,reps:"12",rest:"45s",muscle:"Shoulders",tip:"Vertical pressing motion"},
+        {name:"Chair Dips",sets:3,reps:"12",rest:"45s",muscle:"Triceps",tip:"Elbows close"},
+        {name:"Burpees",sets:3,reps:"12",rest:"60s",muscle:"Full Body/Cardio",tip:"Explosive reps"},
+      ]
+    },
+    "Pull":{
+      focus:"Pull Bodyweight Hypertrophy",
+      cardio:"10 min jogging",
+      exercises:[
+        {name:"Superman Hold",sets:4,reps:"15",rest:"40s",muscle:"Lower Back",tip:"Lift fully"},
+        {name:"Reverse Snow Angels",sets:3,reps:"15",rest:"40s",muscle:"Upper Back",tip:"Slow controlled reps"},
+        {name:"Towel Rows",sets:3,reps:"12",rest:"45s",muscle:"Back",tip:"Pull elbows behind body"},
+        {name:"Doorway Rows",sets:3,reps:"12",rest:"45s",muscle:"Lats",tip:"Maintain body tension"},
+        {name:"Mountain Climbers",sets:3,reps:"45s",rest:"30s",muscle:"Core/Cardio",tip:"Fast controlled pace"},
+      ]
+    },
+    "Legs":{
+      focus:"Bodyweight Leg Fat Burn",
+      cardio:"15 min stair climbing",
+      exercises:[
+        {name:"Bodyweight Squat",sets:4,reps:"20",rest:"45s",muscle:"Legs",tip:"Push knees outward"},
+        {name:"Walking Lunges",sets:3,reps:"12/leg",rest:"45s",muscle:"Legs",tip:"Stay upright"},
+        {name:"Bulgarian Split Squat",sets:3,reps:"10/leg",rest:"60s",muscle:"Quads/Glutes",tip:"Control descent"},
+        {name:"Glute Bridge",sets:3,reps:"20",rest:"45s",muscle:"Glutes",tip:"Pause at top"},
+        {name:"Calf Raises",sets:3,reps:"20",rest:"30s",muscle:"Calves",tip:"Full stretch"},
+        {name:"Plank",sets:3,reps:"45s",rest:"30s",muscle:"Core",tip:"Keep abs tight"},
+      ]
+    }
+  }
+},
+
+
+  "fat-loss|intermediate|4|home": {
+    split:["Upper Body","Lower Body","Rest","Upper Body","Lower Body","Rest","Rest"],
+    days:{
+      "Upper Body":{
+        focus:"Bodyweight Upper Body AMRAP",
+        cardio:"15 min HIIT: 30s burpees / 30s rest × 15",
+        exercises:[
+          {name:"Push-ups",sets:4,reps:"15-20",rest:"60s",muscle:"Chest/Triceps",tip:"Perfect form beats speed"},
+          {name:"Diamond Push-ups",sets:3,reps:"10-12",rest:"60s",muscle:"Triceps/Inner Chest",tip:"Hands form a diamond"},
+          {name:"Wide Push-ups",sets:3,reps:"12",rest:"60s",muscle:"Outer Chest",tip:"Elbows flared wide"},
+          {name:"Pike Push-ups",sets:3,reps:"10",rest:"60s",muscle:"Shoulders",tip:"Hips high, head between arms"},
+          {name:"Tricep Dips (Chair)",sets:3,reps:"15",rest:"60s",muscle:"Triceps",tip:"Elbows point back, not wide"},
+          {name:"Inverted Row (Table)",sets:3,reps:"12",rest:"60s",muscle:"Back/Biceps",tip:"Pull chest to table edge"},
+          {name:"Plank Up-Downs",sets:3,reps:"10/side",rest:"45s",muscle:"Core/Shoulders",tip:"Keep hips level"},
+          {name:"Burpee",sets:3,reps:"10",rest:"60s",muscle:"Full Body/Cardio",tip:"Explosive jump at top"},
+        ]
+      },
+      "Lower Body":{
+        focus:"Bodyweight Lower Body Blast",
+        cardio:"20 min jump rope or jog",
+        exercises:[
+          {name:"Jump Squat",sets:4,reps:"15",rest:"60s",muscle:"Quads/Glutes/Cardio",tip:"Soft landing, absorb impact"},
+          {name:"Bulgarian Split Squat",sets:3,reps:"12/leg",rest:"75s",muscle:"Quads/Glutes",tip:"Rear foot elevated on chair"},
+          {name:"Glute Bridge",sets:4,reps:"20",rest:"45s",muscle:"Glutes",tip:"Single leg = harder version"},
+          {name:"Wall Sit",sets:3,reps:"45s",rest:"45s",muscle:"Quads",tip:"Thighs parallel to floor"},
+          {name:"Lateral Lunges",sets:3,reps:"12/side",rest:"60s",muscle:"Glutes/Inner Thigh",tip:"Keep grounded foot flat"},
+          {name:"Single-Leg Calf Raise",sets:4,reps:"20/leg",rest:"30s",muscle:"Calves",tip:"Use wall for balance"},
+          {name:"Reverse Crunch",sets:3,reps:"15",rest:"30s",muscle:"Lower Abs",tip:"Lift hips off floor"},
+          {name:"Superman",sets:3,reps:"15",rest:"30s",muscle:"Lower Back",tip:"Hold 2 seconds at top"},
+        ]
+      }
+    }
+  },
+"fat-loss|intermediate|3|home": {
+  split:["Full Body","Rest","Full Body","Rest","Full Body","Rest","Rest"],
+  days:{
+    "Full Body":{
+      focus:"Bodyweight Fat Burn Circuit",
+      cardio:"20 min HIIT: mountain climbers + jumping jacks",
+      exercises:[
+        {name:"Push-ups",sets:4,reps:"15-20",rest:"45s",muscle:"Chest/Triceps",tip:"Control every rep"},
+        {name:"Jump Squat",sets:4,reps:"15",rest:"45s",muscle:"Legs/Cardio",tip:"Land softly"},
+        {name:"Pike Push-ups",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Keep hips high"},
+        {name:"Bulgarian Split Squat",sets:3,reps:"12/leg",rest:"60s",muscle:"Glutes/Quads",tip:"Use chair for balance"},
+        {name:"Inverted Row (Table)",sets:3,reps:"12",rest:"60s",muscle:"Back/Biceps",tip:"Pull chest upward"},
+        {name:"Burpees",sets:3,reps:"12",rest:"45s",muscle:"Full Body",tip:"Explode upward"},
+        {name:"Mountain Climbers",sets:3,reps:"30s",rest:"30s",muscle:"Core/Cardio",tip:"Fast controlled pace"},
+        {name:"Plank",sets:3,reps:"60s",rest:"30s",muscle:"Core",tip:"Keep body straight"},
+      ]
+    }
+  }
+},
+
+"fat-loss|intermediate|5|home": {
+  split:["Upper Body","Lower Body","HIIT + Core","Upper Body","Lower Body","Rest","Rest"],
+  days:{
+    "Upper Body":{
+      focus:"Bodyweight Upper Burn",
+      cardio:"15 min burpee intervals",
+      exercises:[
+        {name:"Push-ups",sets:4,reps:"20",rest:"45s",muscle:"Chest",tip:"Full ROM"},
+        {name:"Diamond Push-ups",sets:3,reps:"12",rest:"45s",muscle:"Triceps",tip:"Keep elbows close"},
+        {name:"Pike Push-ups",sets:4,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Head between hands"},
+        {name:"Chair Dips",sets:4,reps:"15",rest:"45s",muscle:"Triceps",tip:"Lower slowly"},
+        {name:"Inverted Row",sets:4,reps:"12",rest:"60s",muscle:"Back",tip:"Chest to table"},
+        {name:"Burpees",sets:3,reps:"15",rest:"45s",muscle:"Full Body",tip:"Stay explosive"},
+      ]
+    },
+
+    "Lower Body":{
+      focus:"Lower Body Conditioning",
+      cardio:"20 min jump rope",
+      exercises:[
+        {name:"Jump Squats",sets:4,reps:"15",rest:"45s",muscle:"Quads",tip:"Explode upward"},
+        {name:"Walking Lunges",sets:4,reps:"14/leg",rest:"60s",muscle:"Legs",tip:"Long stride"},
+        {name:"Bulgarian Split Squat",sets:3,reps:"12",rest:"60s",muscle:"Glutes",tip:"Knee stable"},
+        {name:"Glute Bridge",sets:4,reps:"20",rest:"45s",muscle:"Glutes",tip:"Pause at top"},
+        {name:"Wall Sit",sets:3,reps:"60s",rest:"45s",muscle:"Quads",tip:"Back flat"},
+        {name:"Single-Leg Calf Raise",sets:4,reps:"20",rest:"30s",muscle:"Calves",tip:"Full stretch"},
+      ]
+    },
+
+    "HIIT + Core":{
+      focus:"Fat Burn Core Circuit",
+      cardio:"25 min HIIT",
+      exercises:[
+        {name:"Mountain Climbers",sets:4,reps:"40s",rest:"20s",muscle:"Core/Cardio",tip:"Fast pace"},
+        {name:"High Knees",sets:4,reps:"40s",rest:"20s",muscle:"Cardio",tip:"Drive knees high"},
+        {name:"Plank Up-Downs",sets:3,reps:"12",rest:"30s",muscle:"Core/Shoulders",tip:"Avoid hip rotation"},
+        {name:"Russian Twists",sets:3,reps:"20",rest:"30s",muscle:"Obliques",tip:"Twist fully"},
+        {name:"Reverse Crunch",sets:3,reps:"15",rest:"30s",muscle:"Lower Abs",tip:"Lift hips"},
+        {name:"Burpees",sets:3,reps:"15",rest:"45s",muscle:"Full Body",tip:"Explosive movement"},
+      ]
+    }
+  }
+},
+
+"fat-loss|intermediate|6|home": {
+  split:["Push","Pull","Legs","HIIT + Core","Upper","Lower","Rest"],
+  days:{
+    "Push":{
+      focus:"Push Fat Burn",
+      cardio:"15 min jump rope",
+      exercises:[
+        {name:"Push-ups",sets:4,reps:"20",rest:"45s",muscle:"Chest",tip:"Controlled reps"},
+        {name:"Diamond Push-ups",sets:3,reps:"12",rest:"45s",muscle:"Triceps",tip:"Hands close"},
+        {name:"Pike Push-ups",sets:4,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Keep hips elevated"},
+        {name:"Chair Dips",sets:4,reps:"15",rest:"45s",muscle:"Triceps",tip:"Elbows backward"},
+      ]
+    },
+
+    "Pull":{
+      focus:"Back & Biceps",
+      cardio:"10 min HIIT",
+      exercises:[
+        {name:"Inverted Row",sets:4,reps:"12",rest:"60s",muscle:"Back",tip:"Pull chest upward"},
+        {name:"Superman",sets:4,reps:"15",rest:"30s",muscle:"Lower Back",tip:"Pause at top"},
+        {name:"Towel Rows",sets:3,reps:"15",rest:"45s",muscle:"Lats",tip:"Pull hard"},
+        {name:"Reverse Snow Angels",sets:3,reps:"15",rest:"30s",muscle:"Rear Delts",tip:"Slow movement"},
+      ]
+    },
+
+    "Legs":{
+      focus:"Leg Conditioning",
+      cardio:"20 min jog",
+      exercises:[
+        {name:"Jump Squats",sets:4,reps:"15",rest:"45s",muscle:"Legs",tip:"Soft landing"},
+        {name:"Bulgarian Split Squat",sets:4,reps:"12",rest:"60s",muscle:"Glutes",tip:"Stable balance"},
+        {name:"Wall Sit",sets:3,reps:"60s",rest:"45s",muscle:"Quads",tip:"Parallel thighs"},
+        {name:"Walking Lunges",sets:4,reps:"14/leg",rest:"60s",muscle:"Legs",tip:"Long controlled stride"},
+      ]
+    },
+
+    "HIIT + Core":{
+      focus:"Conditioning",
+      cardio:"25 min full HIIT",
+      exercises:[
+        {name:"Burpees",sets:4,reps:"15",rest:"45s",muscle:"Full Body",tip:"Stay explosive"},
+        {name:"Mountain Climbers",sets:4,reps:"40s",rest:"20s",muscle:"Core",tip:"Fast pace"},
+        {name:"Plank",sets:4,reps:"60s",rest:"30s",muscle:"Core",tip:"Neutral spine"},
+        {name:"Russian Twists",sets:3,reps:"20",rest:"30s",muscle:"Obliques",tip:"Full twist"},
+      ]
+    },
+
+    "Upper":{
+      focus:"Upper Body Volume",
+      cardio:"15 min brisk cardio",
+      exercises:[
+        {name:"Wide Push-ups",sets:4,reps:"15",rest:"45s",muscle:"Chest",tip:"Wide hand position"},
+        {name:"Pike Push-ups",sets:3,reps:"12",rest:"45s",muscle:"Shoulders",tip:"Controlled lowering"},
+        {name:"Inverted Row",sets:4,reps:"12",rest:"60s",muscle:"Back",tip:"Chest to edge"},
+        {name:"Chair Dips",sets:3,reps:"15",rest:"45s",muscle:"Triceps",tip:"Slow negative"},
+      ]
+    },
+
+    "Lower":{
+      focus:"Lower Body Burn",
+      cardio:"20 min jump rope",
+      exercises:[
+        {name:"Glute Bridge",sets:4,reps:"20",rest:"45s",muscle:"Glutes",tip:"Squeeze hard"},
+        {name:"Lateral Lunges",sets:3,reps:"12",rest:"45s",muscle:"Inner Thigh",tip:"Stay low"},
+        {name:"Single-Leg Calf Raise",sets:4,reps:"20",rest:"30s",muscle:"Calves",tip:"Full ROM"},
+        {name:"Reverse Crunch",sets:3,reps:"15",rest:"30s",muscle:"Abs",tip:"Lift hips"},
+      ]
+    }
+  }
+},
+"fat-loss|intermediate|3|dumbbells": {
+  split:["Full Body","Rest","Full Body","Rest","Full Body","Rest","Rest"],
+  days:{
+    "Full Body":{
+      focus:"Dumbbell Fat Burn",
+      cardio:"20 min incline walk",
+      exercises:[
+        {name:"DB Goblet Squat",sets:4,reps:"15",rest:"60s",muscle:"Quads/Glutes",tip:"Keep chest upright"},
+        {name:"DB Bench Press",sets:4,reps:"12",rest:"60s",muscle:"Chest",tip:"Control negative"},
+        {name:"DB Bent Over Row",sets:4,reps:"12",rest:"60s",muscle:"Back",tip:"Flat back"},
+        {name:"DB Shoulder Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Do not arch lower back"},
+        {name:"DB Romanian Deadlift",sets:4,reps:"12",rest:"60s",muscle:"Hamstrings",tip:"Stretch hamstrings"},
+        {name:"DB Walking Lunges",sets:3,reps:"12/leg",rest:"60s",muscle:"Legs",tip:"Long stride"},
+        {name:"DB Russian Twist",sets:3,reps:"20",rest:"30s",muscle:"Core",tip:"Rotate fully"},
+      ]
+    }
+  }
+},
+
+"fat-loss|intermediate|4|dumbbells": {
+  split:["Upper","Lower","Rest","Upper","Lower","Rest","Rest"],
+  days:{
+    "Upper":{
+      focus:"Upper Body Fat Loss",
+      cardio:"15 min HIIT bike",
+      exercises:[
+        {name:"DB Bench Press",sets:4,reps:"12",rest:"60s",muscle:"Chest",tip:"Control reps"},
+        {name:"DB Incline Press",sets:3,reps:"12",rest:"60s",muscle:"Upper Chest",tip:"Do not lock elbows"},
+        {name:"DB Row",sets:4,reps:"12",rest:"60s",muscle:"Back",tip:"Pull elbow back"},
+        {name:"DB Shoulder Press",sets:4,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Brace core"},
+        {name:"DB Curl",sets:3,reps:"15",rest:"45s",muscle:"Biceps",tip:"Avoid swinging"},
+        {name:"DB Skull Crusher",sets:3,reps:"15",rest:"45s",muscle:"Triceps",tip:"Elbows fixed"},
+      ]
+    },
+
+    "Lower":{
+      focus:"Lower Body Burn",
+      cardio:"20 min treadmill walk",
+      exercises:[
+        {name:"DB Goblet Squat",sets:4,reps:"15",rest:"60s",muscle:"Quads",tip:"Go deep"},
+        {name:"DB Romanian Deadlift",sets:4,reps:"12",rest:"60s",muscle:"Hamstrings",tip:"Hip hinge"},
+        {name:"DB Reverse Lunges",sets:3,reps:"12/leg",rest:"60s",muscle:"Glutes",tip:"Push through heel"},
+        {name:"DB Step-ups",sets:3,reps:"12",rest:"60s",muscle:"Legs",tip:"Drive knee up"},
+        {name:"Standing Calf Raise",sets:4,reps:"20",rest:"30s",muscle:"Calves",tip:"Pause at top"},
+        {name:"Leg Raise",sets:3,reps:"15",rest:"30s",muscle:"Abs",tip:"Lower slowly"},
+      ]
+    }
+  }
+},
+
+"fat-loss|intermediate|5|dumbbells": {
+  split:["Push","Pull","Legs","Upper","Lower","Rest","Rest"],
+  days:{
+    "Push":{
+      focus:"Push Hypertrophy",
+      cardio:"15 min incline walk",
+      exercises:[
+        {name:"DB Bench Press",sets:4,reps:"12",rest:"60s",muscle:"Chest",tip:"Controlled tempo"},
+        {name:"DB Shoulder Press",sets:4,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Core tight"},
+        {name:"DB Lateral Raise",sets:3,reps:"15",rest:"45s",muscle:"Side Delts",tip:"Raise to shoulder level"},
+        {name:"DB Skull Crusher",sets:3,reps:"15",rest:"45s",muscle:"Triceps",tip:"Slow negative"},
+      ]
+    },
+
+    "Pull":{
+      focus:"Back & Biceps",
+      cardio:"10 min rowing",
+      exercises:[
+        {name:"DB Row",sets:4,reps:"12",rest:"60s",muscle:"Back",tip:"Squeeze lats"},
+        {name:"DB Rear Delt Fly",sets:3,reps:"15",rest:"45s",muscle:"Rear Delts",tip:"Light weight"},
+        {name:"DB Hammer Curl",sets:3,reps:"15",rest:"45s",muscle:"Biceps",tip:"Neutral grip"},
+        {name:"DB Shrugs",sets:4,reps:"15",rest:"45s",muscle:"Traps",tip:"Pause at top"},
+      ]
+    },
+
+    "Legs":{
+      focus:"Leg Conditioning",
+      cardio:"20 min treadmill",
+      exercises:[
+        {name:"DB Goblet Squat",sets:4,reps:"15",rest:"60s",muscle:"Quads",tip:"Chest up"},
+        {name:"DB Romanian Deadlift",sets:4,reps:"12",rest:"60s",muscle:"Hamstrings",tip:"Hip hinge"},
+        {name:"DB Walking Lunges",sets:3,reps:"12",rest:"60s",muscle:"Legs",tip:"Controlled stride"},
+        {name:"DB Calf Raise",sets:4,reps:"20",rest:"30s",muscle:"Calves",tip:"Stretch fully"},
+      ]
+    },
+
+    "Upper":{
+      focus:"Upper Body Volume",
+      cardio:"15 min HIIT",
+      exercises:[
+        {name:"DB Incline Press",sets:4,reps:"12",rest:"60s",muscle:"Chest",tip:"Full ROM"},
+        {name:"DB Row",sets:4,reps:"12",rest:"60s",muscle:"Back",tip:"Squeeze back"},
+        {name:"DB Arnold Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Rotate smoothly"},
+        {name:"DB Curl",sets:3,reps:"15",rest:"45s",muscle:"Biceps",tip:"No swinging"},
+      ]
+    },
+
+    "Lower":{
+      focus:"Lower Burn",
+      cardio:"20 min bike",
+      exercises:[
+        {name:"DB Sumo Squat",sets:4,reps:"15",rest:"60s",muscle:"Inner Thigh",tip:"Wide stance"},
+        {name:"DB Step-ups",sets:3,reps:"12",rest:"60s",muscle:"Legs",tip:"Drive through heel"},
+        {name:"Glute Bridge",sets:4,reps:"20",rest:"45s",muscle:"Glutes",tip:"Pause at top"},
+        {name:"Reverse Crunch",sets:3,reps:"15",rest:"30s",muscle:"Abs",tip:"Lift hips"},
+      ]
+    }
+  }
+},
+
+"fat-loss|intermediate|6|dumbbells": {
+  split:["Push","Pull","Legs","Push","Pull","Legs","Rest"],
+  days:{
+    "Push":{
+      focus:"Chest Shoulders Triceps",
+      cardio:"15 min incline walk",
+      exercises:[
+        {name:"DB Bench Press",sets:4,reps:"12"},
+        {name:"DB Incline Press",sets:4,reps:"12"},
+        {name:"DB Shoulder Press",sets:4,reps:"12"},
+        {name:"DB Lateral Raise",sets:3,reps:"15"},
+        {name:"DB Skull Crusher",sets:3,reps:"15"},
+      ]
+    },
+
+    "Pull":{
+      focus:"Back Biceps",
+      cardio:"15 min rower",
+      exercises:[
+        {name:"DB Row",sets:4,reps:"12"},
+        {name:"DB Rear Delt Fly",sets:3,reps:"15"},
+        {name:"DB Shrugs",sets:4,reps:"15"},
+        {name:"DB Curl",sets:3,reps:"15"},
+        {name:"DB Hammer Curl",sets:3,reps:"15"},
+      ]
+    },
+
+    "Legs":{
+      focus:"Leg Fat Burn",
+      cardio:"20 min cycling",
+      exercises:[
+        {name:"DB Goblet Squat",sets:4,reps:"15"},
+        {name:"DB Romanian Deadlift",sets:4,reps:"12"},
+        {name:"DB Walking Lunges",sets:3,reps:"12/leg"},
+        {name:"DB Step-ups",sets:3,reps:"12"},
+        {name:"DB Calf Raise",sets:4,reps:"20"},
+      ]
+    }
+  }
+},
+
+"fat-loss|intermediate|3|bands": {
+  split:["Full Body","Rest","Full Body","Rest","Full Body","Rest","Rest"],
+  days:{
+    "Full Body":{
+      focus:"Resistance Band Fat Burn",
+      cardio:"20 min jump rope",
+      exercises:[
+        {name:"Band Squat",sets:4,reps:"15"},
+        {name:"Band Chest Press",sets:4,reps:"15"},
+        {name:"Band Row",sets:4,reps:"15"},
+        {name:"Band Shoulder Press",sets:3,reps:"15"},
+        {name:"Band Deadlift",sets:4,reps:"15"},
+        {name:"Band Curl",sets:3,reps:"15"},
+        {name:"Band Tricep Pushdown",sets:3,reps:"15"},
+      ]
+    }
+  }
+},
+
+"fat-loss|intermediate|4|bands": {
+  split:["Upper","Lower","Rest","Upper","Lower","Rest","Rest"],
+  days:{
+    "Upper":{
+      focus:"Upper Band Workout",
+      cardio:"15 min HIIT",
+      exercises:[
+        {name:"Band Chest Press",sets:4,reps:"15"},
+        {name:"Band Row",sets:4,reps:"15"},
+        {name:"Band Shoulder Press",sets:4,reps:"15"},
+        {name:"Band Lateral Raise",sets:3,reps:"15"},
+        {name:"Band Curl",sets:3,reps:"15"},
+        {name:"Band Tricep Pushdown",sets:3,reps:"15"},
+      ]
+    },
+
+    "Lower":{
+      focus:"Lower Body Bands",
+      cardio:"20 min brisk walk",
+      exercises:[
+        {name:"Band Squat",sets:4,reps:"15"},
+        {name:"Band Romanian Deadlift",sets:4,reps:"15"},
+        {name:"Band Lunges",sets:3,reps:"12/leg"},
+        {name:"Band Glute Bridge",sets:4,reps:"20"},
+        {name:"Band Calf Raise",sets:4,reps:"20"},
+        {name:"Leg Raise",sets:3,reps:"15"},
+      ]
+    }
+  }
+},
+
+"fat-loss|intermediate|5|bands": {
+  split:["Push","Pull","Legs","Upper","Lower","Rest","Rest"],
+  days:{
+    "Push":{
+      focus:"Band Push Day",
+      cardio:"15 min HIIT",
+      exercises:[
+        {name:"Band Chest Press",sets:4,reps:"15"},
+        {name:"Band Shoulder Press",sets:4,reps:"15"},
+        {name:"Band Lateral Raise",sets:3,reps:"15"},
+        {name:"Band Tricep Extension",sets:3,reps:"15"},
+      ]
+    },
+
+    "Pull":{
+      focus:"Band Pull Day",
+      cardio:"15 min rower",
+      exercises:[
+        {name:"Band Row",sets:4,reps:"15"},
+        {name:"Band Face Pull",sets:3,reps:"15"},
+        {name:"Band Curl",sets:3,reps:"15"},
+        {name:"Band Shrugs",sets:4,reps:"15"},
+      ]
+    },
+
+    "Legs":{
+      focus:"Band Legs",
+      cardio:"20 min walk",
+      exercises:[
+        {name:"Band Squat",sets:4,reps:"15"},
+        {name:"Band RDL",sets:4,reps:"15"},
+        {name:"Band Lunges",sets:3,reps:"12"},
+        {name:"Band Glute Bridge",sets:4,reps:"20"},
+      ]
+    }
+  }
+},
+
+"fat-loss|intermediate|6|bands": {
+  split:["Push","Pull","Legs","Push","Pull","Legs","Rest"],
+  days:{
+    "Push":{
+      focus:"Push Bands",
+      exercises:[
+        {name:"Band Chest Press",sets:4,reps:"15"},
+        {name:"Band Shoulder Press",sets:4,reps:"15"},
+        {name:"Band Lateral Raise",sets:3,reps:"15"},
+        {name:"Band Tricep Extension",sets:3,reps:"15"},
+      ]
+    },
+
+    "Pull":{
+      focus:"Pull Bands",
+      exercises:[
+        {name:"Band Row",sets:4,reps:"15"},
+        {name:"Band Face Pull",sets:3,reps:"15"},
+        {name:"Band Curl",sets:3,reps:"15"},
+        {name:"Band Shrugs",sets:4,reps:"15"},
+      ]
+    },
+
+    "Legs":{
+      focus:"Legs Bands",
+      exercises:[
+        {name:"Band Squat",sets:4,reps:"15"},
+        {name:"Band RDL",sets:4,reps:"15"},
+        {name:"Band Lunges",sets:3,reps:"12"},
+        {name:"Band Calf Raise",sets:4,reps:"20"},
+      ]
+    }
+  }
+},
+"fat-loss|intermediate|3|gym": {
+  split:["Full Body","Rest","Full Body","Rest","Full Body","Rest","Rest"],
+  days:{
+    "Full Body":{
+      focus:"Full Body Fat Burn",
+      cardio:"20 min incline treadmill walk",
+      exercises:[
+        {name:"Barbell Squat",sets:4,reps:"10-12",rest:"75s",muscle:"Quads/Glutes",tip:"Keep core tight"},
+        {name:"Bench Press",sets:4,reps:"10-12",rest:"75s",muscle:"Chest",tip:"Control bar path"},
+        {name:"Lat Pulldown",sets:4,reps:"12",rest:"60s",muscle:"Back",tip:"Pull elbows down"},
+        {name:"Romanian Deadlift",sets:4,reps:"12",rest:"75s",muscle:"Hamstrings",tip:"Hip hinge movement"},
+        {name:"Seated Shoulder Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Avoid arching back"},
+        {name:"Walking Lunges",sets:3,reps:"12/leg",rest:"60s",muscle:"Legs",tip:"Long controlled stride"},
+        {name:"Cable Crunch",sets:3,reps:"15",rest:"45s",muscle:"Abs",tip:"Crunch fully"},
+      ]
+    }
+  }
+},
+
+"fat-loss|intermediate|4|gym": {
+  split:["Upper","Lower","Rest","Upper","Lower","Rest","Rest"],
+  days:{
+    "Upper":{
+      focus:"Upper Body Fat Loss",
+      cardio:"15 min HIIT bike",
+      exercises:[
+        {name:"Bench Press",sets:4,reps:"10-12",rest:"75s",muscle:"Chest",tip:"Controlled tempo"},
+        {name:"Incline Dumbbell Press",sets:3,reps:"12",rest:"60s",muscle:"Upper Chest",tip:"Full range"},
+        {name:"Barbell Row",sets:4,reps:"10-12",rest:"75s",muscle:"Back",tip:"Squeeze shoulder blades"},
+        {name:"Lat Pulldown",sets:3,reps:"12",rest:"60s",muscle:"Lats",tip:"Avoid swinging"},
+        {name:"Seated Shoulder Press",sets:4,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Brace core"},
+        {name:"Cable Curl",sets:3,reps:"15",rest:"45s",muscle:"Biceps",tip:"No momentum"},
+        {name:"Tricep Rope Pushdown",sets:3,reps:"15",rest:"45s",muscle:"Triceps",tip:"Extend fully"},
+      ]
+    },
+
+    "Lower":{
+      focus:"Lower Body Conditioning",
+      cardio:"20 min incline treadmill",
+      exercises:[
+        {name:"Barbell Squat",sets:4,reps:"10",rest:"75s",muscle:"Quads",tip:"Go below parallel"},
+        {name:"Romanian Deadlift",sets:4,reps:"12",rest:"75s",muscle:"Hamstrings",tip:"Stretch hamstrings"},
+        {name:"Leg Press",sets:4,reps:"15",rest:"60s",muscle:"Quads",tip:"Do not lock knees"},
+        {name:"Walking Lunges",sets:3,reps:"12/leg",rest:"60s",muscle:"Glutes",tip:"Push through heel"},
+        {name:"Leg Curl",sets:3,reps:"15",rest:"45s",muscle:"Hamstrings",tip:"Control lowering"},
+        {name:"Standing Calf Raise",sets:4,reps:"20",rest:"30s",muscle:"Calves",tip:"Pause at top"},
+        {name:"Hanging Leg Raise",sets:3,reps:"15",rest:"30s",muscle:"Abs",tip:"Avoid swinging"},
+      ]
+    }
+  }
+},
+
+"fat-loss|intermediate|5|gym": {
+  split:["Push","Pull","Legs","Upper","Lower","Rest","Rest"],
+  days:{
+    "Push":{
+      focus:"Push Hypertrophy",
+      cardio:"15 min stair climber",
+      exercises:[
+        {name:"Bench Press",sets:4,reps:"10",rest:"75s",muscle:"Chest",tip:"Drive through chest"},
+        {name:"Incline Dumbbell Press",sets:4,reps:"12",rest:"60s",muscle:"Upper Chest",tip:"Slow eccentric"},
+        {name:"Seated Shoulder Press",sets:4,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Do not arch"},
+        {name:"Cable Lateral Raise",sets:3,reps:"15",rest:"45s",muscle:"Side Delts",tip:"Raise to shoulder height"},
+        {name:"Dips",sets:3,reps:"12",rest:"60s",muscle:"Triceps",tip:"Lean slightly forward"},
+        {name:"Tricep Rope Pushdown",sets:3,reps:"15",rest:"45s",muscle:"Triceps",tip:"Full extension"},
+      ]
+    },
+
+    "Pull":{
+      focus:"Back & Biceps",
+      cardio:"15 min rowing machine",
+      exercises:[
+        {name:"Deadlift",sets:4,reps:"6-8",rest:"90s",muscle:"Posterior Chain",tip:"Keep spine neutral"},
+        {name:"Pull-ups",sets:4,reps:"10",rest:"75s",muscle:"Lats",tip:"Chest to bar"},
+        {name:"Barbell Row",sets:4,reps:"10",rest:"75s",muscle:"Back",tip:"Pull toward waist"},
+        {name:"Seated Cable Row",sets:3,reps:"12",rest:"60s",muscle:"Mid Back",tip:"Squeeze shoulder blades"},
+        {name:"Face Pull",sets:3,reps:"15",rest:"45s",muscle:"Rear Delts",tip:"Pull toward forehead"},
+        {name:"EZ Bar Curl",sets:3,reps:"15",rest:"45s",muscle:"Biceps",tip:"Elbows fixed"},
+      ]
+    },
+
+    "Legs":{
+      focus:"Leg Fat Burn",
+      cardio:"20 min cycling",
+      exercises:[
+        {name:"Barbell Squat",sets:4,reps:"10",rest:"75s",muscle:"Quads",tip:"Chest up"},
+        {name:"Romanian Deadlift",sets:4,reps:"12",rest:"75s",muscle:"Hamstrings",tip:"Hip hinge"},
+        {name:"Leg Press",sets:4,reps:"15",rest:"60s",muscle:"Quads",tip:"Controlled reps"},
+        {name:"Bulgarian Split Squat",sets:3,reps:"12",rest:"60s",muscle:"Glutes",tip:"Stay balanced"},
+        {name:"Leg Curl",sets:3,reps:"15",rest:"45s",muscle:"Hamstrings",tip:"Slow lowering"},
+        {name:"Seated Calf Raise",sets:4,reps:"20",rest:"30s",muscle:"Calves",tip:"Pause at top"},
+      ]
+    },
+
+    "Upper":{
+      focus:"Upper Volume Day",
+      cardio:"15 min HIIT treadmill",
+      exercises:[
+        {name:"Incline Bench Press",sets:4,reps:"10",rest:"75s",muscle:"Chest",tip:"Controlled motion"},
+        {name:"Lat Pulldown",sets:4,reps:"12",rest:"60s",muscle:"Back",tip:"Elbows down"},
+        {name:"Arnold Press",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Rotate smoothly"},
+        {name:"Cable Fly",sets:3,reps:"15",rest:"45s",muscle:"Chest",tip:"Squeeze chest"},
+        {name:"Hammer Curl",sets:3,reps:"15",rest:"45s",muscle:"Biceps",tip:"Neutral grip"},
+        {name:"Overhead Rope Extension",sets:3,reps:"15",rest:"45s",muscle:"Triceps",tip:"Stretch fully"},
+      ]
+    },
+
+    "Lower":{
+      focus:"Lower Conditioning",
+      cardio:"20 min incline walk",
+      exercises:[
+        {name:"Front Squat",sets:4,reps:"10",rest:"75s",muscle:"Quads",tip:"Elbows high"},
+        {name:"Walking Lunges",sets:4,reps:"12/leg",rest:"60s",muscle:"Legs",tip:"Long stride"},
+        {name:"Hip Thrust",sets:4,reps:"12",rest:"60s",muscle:"Glutes",tip:"Pause at top"},
+        {name:"Leg Extension",sets:3,reps:"15",rest:"45s",muscle:"Quads",tip:"Controlled squeeze"},
+        {name:"Standing Calf Raise",sets:4,reps:"20",rest:"30s",muscle:"Calves",tip:"Full ROM"},
+        {name:"Cable Crunch",sets:3,reps:"15",rest:"30s",muscle:"Abs",tip:"Crunch fully"},
+      ]
+    }
+  }
+},
+
+"fat-loss|intermediate|6|gym": {
+  split:["Push","Pull","Legs","Push","Pull","Legs","Rest"],
+  days:{
+    "Push":{
+      focus:"Chest Shoulders Triceps",
+      cardio:"15 min stair climber",
+      exercises:[
+        {name:"Bench Press",sets:4,reps:"10",rest:"75s"},
+        {name:"Incline Dumbbell Press",sets:4,reps:"12",rest:"60s"},
+        {name:"Overhead Press",sets:4,reps:"10",rest:"60s"},
+        {name:"Cable Lateral Raise",sets:3,reps:"15",rest:"45s"},
+        {name:"Dips",sets:3,reps:"12",rest:"60s"},
+        {name:"Tricep Pushdown",sets:3,reps:"15",rest:"45s"},
+      ]
+    },
+
+    "Pull":{
+      focus:"Back Biceps",
+      cardio:"15 min rowing machine",
+      exercises:[
+        {name:"Deadlift",sets:4,reps:"6-8",rest:"90s"},
+        {name:"Pull-ups",sets:4,reps:"10",rest:"75s"},
+        {name:"Barbell Row",sets:4,reps:"10",rest:"75s"},
+        {name:"Seated Cable Row",sets:3,reps:"12",rest:"60s"},
+        {name:"Face Pull",sets:3,reps:"15",rest:"45s"},
+        {name:"EZ Bar Curl",sets:3,reps:"15",rest:"45s"},
+      ]
+    },
+
+    "Legs":{
+      focus:"Leg Conditioning",
+      cardio:"20 min incline treadmill",
+      exercises:[
+        {name:"Squat",sets:4,reps:"10",rest:"75s"},
+        {name:"Romanian Deadlift",sets:4,reps:"12",rest:"75s"},
+        {name:"Leg Press",sets:4,reps:"15",rest:"60s"},
+        {name:"Walking Lunges",sets:3,reps:"12/leg",rest:"60s"},
+        {name:"Leg Curl",sets:3,reps:"15",rest:"45s"},
+        {name:"Standing Calf Raise",sets:4,reps:"20",rest:"30s"},
+      ]
+    }
+  }
+},
+  "fat-loss|advanced|5|gym": {
+    split:["Push","Pull","Legs","Push","Pull","Rest","Rest"],
+    days:{
+      "Push":{
+        focus:"Push Day — Chest / Shoulders / Triceps",
+        cardio:"10 min HIIT cycle sprint post-workout",
+        exercises:[
+          {name:"Flat Barbell Bench Press",sets:5,reps:"8-10",rest:"90s",muscle:"Chest",tip:"Arch back slightly, feet flat"},
+          {name:"Incline DB Press",sets:4,reps:"10",rest:"75s",muscle:"Upper Chest",tip:"Touch DBs at top"},
+          {name:"Cable Fly",sets:3,reps:"12-15",rest:"60s",muscle:"Chest",tip:"Keep slight bend in elbows"},
+          {name:"Seated DB Shoulder Press",sets:4,reps:"10",rest:"75s",muscle:"Shoulders",tip:"Don't lock out at top"},
+          {name:"Cable Lateral Raise",sets:4,reps:"15",rest:"45s",muscle:"Side Delts",tip:"Unilateral, cross-body cable"},
+          {name:"Rear Delt Fly (Pec Deck Reverse)",sets:3,reps:"15",rest:"45s",muscle:"Rear Delts",tip:"Slight forward lean"},
+          {name:"Skull Crushers",sets:4,reps:"10-12",rest:"60s",muscle:"Triceps",tip:"Bar to forehead, elbows fixed"},
+          {name:"Tricep V-Bar Pushdown",sets:3,reps:"12-15",rest:"45s",muscle:"Triceps",tip:"Lean slightly forward"},
+        ]
+      },
+      "Pull":{
+        focus:"Pull Day — Back / Biceps",
+        cardio:"15 min rowing machine",
+        exercises:[
+          {name:"Weighted Pull-ups",sets:5,reps:"6-8",rest:"120s",muscle:"Lats/Back",tip:"Full dead hang each rep"},
+          {name:"Barbell Row",sets:4,reps:"8-10",rest:"90s",muscle:"Mid Back",tip:"45° torso angle, row to belly"},
+          {name:"Seated Cable Row (Wide Grip)",sets:4,reps:"10-12",rest:"75s",muscle:"Upper Back",tip:"Elbows flared wide"},
+          {name:"Single-Arm Cable Row",sets:3,reps:"12/side",rest:"60s",muscle:"Back/Biceps",tip:"Full rotation at bottom"},
+          {name:"Face Pull",sets:4,reps:"15",rest:"45s",muscle:"Rear Delt/Rotator Cuff",tip:"Pull to face, thumbs back"},
+          {name:"Barbell Curl",sets:4,reps:"10",rest:"60s",muscle:"Biceps",tip:"Squeeze hard at top"},
+          {name:"Incline DB Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps Long Head",tip:"Full stretch at bottom"},
+          {name:"Hammer Curl",sets:3,reps:"12",rest:"45s",muscle:"Brachialis",tip:"Neutral wrist, slow tempo"},
+        ]
+      },
+      "Legs":{
+        focus:"Leg Day — Quads / Hamstrings / Glutes / Calves",
+        cardio:"20 min stairmill at moderate pace",
+        exercises:[
+          {name:"Barbell Back Squat",sets:5,reps:"8-10",rest:"120s",muscle:"Quads/Glutes",tip:"Brace core, big breath before descent"},
+          {name:"Romanian Deadlift",sets:4,reps:"10",rest:"90s",muscle:"Hamstrings",tip:"Bar drags down shins"},
+          {name:"Leg Press",sets:4,reps:"12-15",rest:"75s",muscle:"Quads",tip:"Don't lock knees at top"},
+          {name:"Walking Lunges (Barbell)",sets:3,reps:"16 steps",rest:"75s",muscle:"Quads/Glutes",tip:"Long powerful strides"},
+          {name:"Leg Curl",sets:4,reps:"12",rest:"60s",muscle:"Hamstrings",tip:"Point toes slightly inward"},
+          {name:"Hip Thrust (Barbell)",sets:4,reps:"12",rest:"75s",muscle:"Glutes",tip:"Drive hips to ceiling"},
+          {name:"Standing Calf Raise",sets:5,reps:"20",rest:"30s",muscle:"Calves",tip:"Pause 2s at top"},
+          {name:"Ab Wheel Rollout",sets:3,reps:"10-12",rest:"45s",muscle:"Core",tip:"Brace hard, slow return"},
+        ]
+      }
+    }
+  },
+  "fat-loss|advanced|5|dumbbells": {
+    split:["Push","Pull","Legs","Push","Pull","Rest","Rest"],
+    days:{
+      "Push":{
+        focus:"Advanced DB Push",
+        cardio:"15 min AMRAP burpees/jump squats",
+        exercises:[
+          {name:"DB Bench Press",sets:5,reps:"8-10",rest:"90s",muscle:"Chest",tip:"Full stretch at bottom"},
+          {name:"DB Incline Press",sets:4,reps:"10",rest:"75s",muscle:"Upper Chest",tip:"Slow 3-sec descent"},
+          {name:"DB Fly",sets:3,reps:"12",rest:"60s",muscle:"Chest",tip:"Arc motion, squeeze at top"},
+          {name:"DB Arnold Press",sets:4,reps:"10",rest:"75s",muscle:"Shoulders",tip:"Start with palms facing you"},
+          {name:"DB Lateral Raise",sets:4,reps:"15",rest:"45s",muscle:"Side Delts",tip:"Slight forward lean helps"},
+          {name:"DB Front Raise",sets:3,reps:"12",rest:"45s",muscle:"Front Delts",tip:"Alternate arms"},
+          {name:"DB Skull Crusher",sets:4,reps:"10",rest:"60s",muscle:"Triceps",tip:"Elbows don't flare"},
+          {name:"DB Kickback",sets:3,reps:"15/side",rest:"45s",muscle:"Triceps",tip:"Extend fully, squeeze hard"},
+        ]
+      },
+      "Pull":{
+        focus:"Advanced DB Pull",
+        cardio:"15 min jump rope intervals",
+        exercises:[
+          {name:"DB Pullover",sets:4,reps:"12",rest:"75s",muscle:"Lats/Chest",tip:"Arch back slightly on bench"},
+          {name:"DB Bent-Over Row",sets:4,reps:"10",rest:"75s",muscle:"Back",tip:"Pause 1s at top"},
+          {name:"DB Single Arm Row",sets:4,reps:"10/side",rest:"60s",muscle:"Back",tip:"Full retraction"},
+          {name:"DB Reverse Fly",sets:3,reps:"15",rest:"45s",muscle:"Rear Delts",tip:"Bent 90° at hips"},
+          {name:"DB Shrug",sets:4,reps:"15",rest:"45s",muscle:"Traps",tip:"Straight up, not circular"},
+          {name:"DB Bicep Curl",sets:4,reps:"10",rest:"60s",muscle:"Biceps",tip:"Supinate at top"},
+          {name:"DB Incline Curl",sets:3,reps:"12",rest:"45s",muscle:"Biceps Long Head",tip:"Arms hang straight down"},
+          {name:"DB Zottman Curl",sets:3,reps:"10",rest:"45s",muscle:"Biceps/Brachialis",tip:"Pronate on way down"},
+        ]
+      },
+      "Legs":{
+        focus:"Advanced DB Legs",
+        cardio:"20 min hill walk or jump rope",
+        exercises:[
+          {name:"DB Goblet Squat",sets:5,reps:"12-15",rest:"90s",muscle:"Quads/Glutes",tip:"Pause 2s at bottom"},
+          {name:"DB Romanian Deadlift",sets:4,reps:"12",rest:"75s",muscle:"Hamstrings",tip:"Feel the hamstring pull"},
+          {name:"DB Bulgarian Split Squat",sets:4,reps:"10/leg",rest:"90s",muscle:"Quads/Glutes",tip:"Hardest single-leg exercise"},
+          {name:"DB Step-up",sets:3,reps:"12/leg",rest:"60s",muscle:"Glutes/Quads",tip:"Drive through front heel"},
+          {name:"DB Sumo Deadlift",sets:3,reps:"12",rest:"75s",muscle:"Inner Thigh/Glutes",tip:"Toes out 45°"},
+          {name:"DB Single-Leg Deadlift",sets:3,reps:"10/leg",rest:"60s",muscle:"Hamstrings/Balance",tip:"Hinge, don't squat"},
+          {name:"DB Calf Raise",sets:5,reps:"20",rest:"30s",muscle:"Calves",tip:"Step edge for full range"},
+          {name:"Plank with DB Row",sets:3,reps:"8/side",rest:"60s",muscle:"Core/Back",tip:"Hips stay level"},
+        ]
+      }
+    }
+  },
+  "fat-loss|advanced|3|gym": {
+  split:["Push","Pull","Legs","Rest","Rest","Rest","Rest"],
+  days:{
+    "Push":{
+      focus:"Heavy Push + HIIT",
+      cardio:"20 min stair climber HIIT",
+      exercises:[
+        {name:"Barbell Bench Press",sets:5,reps:"6-8"},
+        {name:"Incline Dumbbell Press",sets:4,reps:"10"},
+        {name:"Seated Shoulder Press",sets:4,reps:"10"},
+        {name:"Cable Fly",sets:3,reps:"15"},
+        {name:"Tricep Pushdown",sets:4,reps:"15"},
+        {name:"Burpees",sets:3,reps:"15"},
+      ]
+    },
+
+    "Pull":{
+      focus:"Back Thickness + Conditioning",
+      cardio:"15 min rowing intervals",
+      exercises:[
+        {name:"Deadlift",sets:5,reps:"5"},
+        {name:"Pull-ups",sets:4,reps:"10-12"},
+        {name:"Barbell Row",sets:4,reps:"8-10"},
+        {name:"Lat Pulldown",sets:3,reps:"12"},
+        {name:"Face Pull",sets:3,reps:"15"},
+        {name:"Hammer Curl",sets:3,reps:"15"},
+      ]
+    },
+
+    "Legs":{
+      focus:"Leg Destruction",
+      cardio:"20 min incline treadmill",
+      exercises:[
+        {name:"Barbell Squat",sets:5,reps:"6-8"},
+        {name:"Romanian Deadlift",sets:4,reps:"10"},
+        {name:"Walking Lunges",sets:4,reps:"14/leg"},
+        {name:"Leg Press",sets:4,reps:"15"},
+        {name:"Leg Curl",sets:4,reps:"12"},
+        {name:"Standing Calf Raise",sets:5,reps:"20"},
+      ]
+    }
+  }
+},
+
+"fat-loss|advanced|4|gym": {
+  split:["Upper","Lower","Upper","Lower","Rest","Rest","Rest"],
+  days:{
+    "Upper":{
+      focus:"Advanced Upper Burn",
+      cardio:"15 min battle ropes",
+      exercises:[
+        {name:"Bench Press",sets:5,reps:"6-8"},
+        {name:"Weighted Pull-ups",sets:4,reps:"8"},
+        {name:"Incline DB Press",sets:4,reps:"10"},
+        {name:"Barbell Row",sets:4,reps:"10"},
+        {name:"Arnold Press",sets:4,reps:"12"},
+        {name:"Cable Curl",sets:3,reps:"15"},
+        {name:"Rope Pushdown",sets:3,reps:"15"},
+      ]
+    },
+
+    "Lower":{
+      focus:"Athletic Lower Body",
+      cardio:"20 min sled push",
+      exercises:[
+        {name:"Back Squat",sets:5,reps:"6"},
+        {name:"Romanian Deadlift",sets:4,reps:"10"},
+        {name:"Bulgarian Split Squat",sets:4,reps:"12"},
+        {name:"Hack Squat",sets:4,reps:"12"},
+        {name:"Leg Curl",sets:4,reps:"12"},
+        {name:"Seated Calf Raise",sets:5,reps:"20"},
+      ]
+    }
+  }
+},
+
+"fat-loss|advanced|6|gym": {
+  split:["Push","Pull","Legs","Push","Pull","Legs","Rest"],
+  days:{
+    "Push":{
+      focus:"Strength Push",
+      cardio:"15 min HIIT",
+      exercises:[
+        {name:"Bench Press",sets:5,reps:"5"},
+        {name:"Incline Press",sets:4,reps:"8"},
+        {name:"Overhead Press",sets:4,reps:"8"},
+        {name:"Cable Fly",sets:4,reps:"15"},
+        {name:"Dips",sets:4,reps:"15"},
+      ]
+    },
+
+    "Pull":{
+      focus:"Back Width + Density",
+      cardio:"15 min rower",
+      exercises:[
+        {name:"Deadlift",sets:5,reps:"5"},
+        {name:"Weighted Pull-ups",sets:4,reps:"8"},
+        {name:"Barbell Row",sets:4,reps:"8"},
+        {name:"Cable Row",sets:4,reps:"12"},
+        {name:"EZ Curl",sets:4,reps:"12"},
+      ]
+    },
+
+    "Legs":{
+      focus:"Explosive Legs",
+      cardio:"20 min incline treadmill",
+      exercises:[
+        {name:"Squat",sets:5,reps:"5"},
+        {name:"Romanian Deadlift",sets:4,reps:"10"},
+        {name:"Walking Lunges",sets:4,reps:"12"},
+        {name:"Leg Press",sets:4,reps:"15"},
+        {name:"Leg Extension",sets:4,reps:"15"},
+      ]
+    }
+  }
+},
+
+"fat-loss|advanced|3|home": {
+  split:["Full Body","Rest","Full Body","Rest","Full Body","Rest","Rest"],
+  days:{
+    "Full Body":{
+      focus:"Extreme Bodyweight Conditioning",
+      cardio:"25 min HIIT",
+      exercises:[
+        {name:"Burpees",sets:5,reps:"20"},
+        {name:"Plyo Push-ups",sets:4,reps:"15"},
+        {name:"Jump Squats",sets:5,reps:"20"},
+        {name:"Bulgarian Split Squat",sets:4,reps:"15/leg"},
+        {name:"Pike Push-ups",sets:4,reps:"15"},
+        {name:"Mountain Climbers",sets:5,reps:"45s"},
+        {name:"Plank",sets:4,reps:"90s"},
+      ]
+    }
+  }
+},
+
+"fat-loss|advanced|4|home": {
+  split:["Upper","Lower","Upper","Lower","Rest","Rest","Rest"],
+  days:{
+    "Upper":{
+      focus:"Bodyweight Upper Challenge",
+      cardio:"20 min HIIT",
+      exercises:[
+        {name:"Plyo Push-ups",sets:5,reps:"15"},
+        {name:"Diamond Push-ups",sets:4,reps:"20"},
+        {name:"Pike Push-ups",sets:4,reps:"15"},
+        {name:"Chair Dips",sets:4,reps:"20"},
+        {name:"Inverted Row",sets:4,reps:"15"},
+        {name:"Burpees",sets:4,reps:"15"},
+      ]
+    },
+
+    "Lower":{
+      focus:"Explosive Legs",
+      cardio:"20 min jump rope",
+      exercises:[
+        {name:"Jump Squat",sets:5,reps:"20"},
+        {name:"Walking Lunges",sets:4,reps:"15"},
+        {name:"Wall Sit",sets:4,reps:"75s"},
+        {name:"Single Leg Glute Bridge",sets:4,reps:"20"},
+        {name:"Calf Raise",sets:5,reps:"25"},
+      ]
+    }
+  }
+},
+
+"fat-loss|advanced|6|home": {
+  split:["Push","Pull","Legs","HIIT","Upper","Lower","Rest"],
+  days:{
+    "Push":{
+      exercises:[
+        {name:"Plyo Push-ups",sets:5,reps:"15"},
+        {name:"Diamond Push-ups",sets:4,reps:"20"},
+        {name:"Pike Push-ups",sets:4,reps:"15"},
+      ]
+    },
+
+    "Pull":{
+      exercises:[
+        {name:"Inverted Row",sets:5,reps:"15"},
+        {name:"Superman",sets:4,reps:"20"},
+        {name:"Reverse Snow Angels",sets:4,reps:"20"},
+      ]
+    },
+
+    "Legs":{
+      exercises:[
+        {name:"Jump Squats",sets:5,reps:"20"},
+        {name:"Bulgarian Split Squat",sets:4,reps:"15"},
+        {name:"Walking Lunges",sets:4,reps:"15"},
+      ]
+    },
+
+    "HIIT":{
+      exercises:[
+        {name:"Burpees",sets:5,reps:"20"},
+        {name:"Mountain Climbers",sets:5,reps:"45s"},
+        {name:"High Knees",sets:5,reps:"45s"},
+      ]
+    },
+
+    "Upper":{
+      exercises:[
+        {name:"Push-ups",sets:5,reps:"25"},
+        {name:"Chair Dips",sets:4,reps:"20"},
+        {name:"Pike Push-ups",sets:4,reps:"15"},
+      ]
+    },
+
+    "Lower":{
+      exercises:[
+        {name:"Jump Lunges",sets:5,reps:"15"},
+        {name:"Wall Sit",sets:4,reps:"90s"},
+        {name:"Single Leg Calf Raise",sets:5,reps:"25"},
+      ]
+    }
+  }
+},
+
+"fat-loss|advanced|3|dumbbells": {
+  split:["Push","Pull","Legs","Rest","Rest","Rest","Rest"],
+  days:{
+    "Push":{
+      exercises:[
+        {name:"DB Bench Press",sets:5,reps:"8"},
+        {name:"DB Incline Press",sets:4,reps:"10"},
+        {name:"DB Shoulder Press",sets:4,reps:"10"},
+        {name:"DB Lateral Raise",sets:4,reps:"15"},
+      ]
+    },
+
+    "Pull":{
+      exercises:[
+        {name:"DB Row",sets:5,reps:"10"},
+        {name:"DB Rear Delt Fly",sets:4,reps:"15"},
+        {name:"DB Hammer Curl",sets:4,reps:"15"},
+        {name:"DB Shrugs",sets:5,reps:"15"},
+      ]
+    },
+
+    "Legs":{
+      exercises:[
+        {name:"DB Goblet Squat",sets:5,reps:"15"},
+        {name:"DB Romanian Deadlift",sets:5,reps:"12"},
+        {name:"DB Walking Lunges",sets:4,reps:"15"},
+        {name:"DB Step-ups",sets:4,reps:"12"},
+      ]
+    }
+  }
+},
+
+"fat-loss|advanced|4|dumbbells": {
+  split:["Upper","Lower","Upper","Lower","Rest","Rest","Rest"],
+  days:{
+    "Upper":{
+      exercises:[
+        {name:"DB Bench Press",sets:5,reps:"8"},
+        {name:"DB Row",sets:5,reps:"10"},
+        {name:"DB Shoulder Press",sets:4,reps:"10"},
+        {name:"DB Curl",sets:4,reps:"15"},
+        {name:"DB Skull Crusher",sets:4,reps:"15"},
+      ]
+    },
+
+    "Lower":{
+      exercises:[
+        {name:"DB Goblet Squat",sets:5,reps:"15"},
+        {name:"DB Romanian Deadlift",sets:5,reps:"12"},
+        {name:"DB Walking Lunges",sets:4,reps:"15"},
+        {name:"DB Calf Raise",sets:5,reps:"20"},
+      ]
+    }
+  }
+},
+
+"fat-loss|advanced|6|dumbbells": {
+  split:["Push","Pull","Legs","Push","Pull","Legs","Rest"],
+  days:{
+    "Push":{
+      exercises:[
+        {name:"DB Bench Press",sets:5,reps:"8"},
+        {name:"DB Incline Press",sets:4,reps:"10"},
+        {name:"DB Shoulder Press",sets:4,reps:"10"},
+      ]
+    },
+
+    "Pull":{
+      exercises:[
+        {name:"DB Row",sets:5,reps:"10"},
+        {name:"DB Rear Delt Fly",sets:4,reps:"15"},
+        {name:"DB Hammer Curl",sets:4,reps:"15"},
+      ]
+    },
+
+    "Legs":{
+      exercises:[
+        {name:"DB Goblet Squat",sets:5,reps:"15"},
+        {name:"DB Romanian Deadlift",sets:5,reps:"12"},
+        {name:"DB Walking Lunges",sets:4,reps:"15"},
+      ]
+    }
+  }
+},
+
+"fat-loss|advanced|3|bands": {
+  split:["Full Body","Rest","Full Body","Rest","Full Body","Rest","Rest"],
+  days:{
+    "Full Body":{
+      exercises:[
+        {name:"Band Squat",sets:5,reps:"20"},
+        {name:"Band Chest Press",sets:5,reps:"15"},
+        {name:"Band Row",sets:5,reps:"15"},
+        {name:"Band Shoulder Press",sets:4,reps:"15"},
+        {name:"Band Deadlift",sets:5,reps:"15"},
+      ]
+    }
+  }
+},
+
+"fat-loss|advanced|4|bands": {
+  split:["Upper","Lower","Upper","Lower","Rest","Rest","Rest"],
+  days:{
+    "Upper":{
+      exercises:[
+        {name:"Band Chest Press",sets:5,reps:"15"},
+        {name:"Band Row",sets:5,reps:"15"},
+        {name:"Band Shoulder Press",sets:4,reps:"15"},
+        {name:"Band Curl",sets:4,reps:"15"},
+      ]
+    },
+
+    "Lower":{
+      exercises:[
+        {name:"Band Squat",sets:5,reps:"20"},
+        {name:"Band RDL",sets:5,reps:"15"},
+        {name:"Band Lunges",sets:4,reps:"15"},
+        {name:"Band Glute Bridge",sets:4,reps:"20"},
+      ]
+    }
+  }
+},
+
+"fat-loss|advanced|6|bands": {
+  split:["Push","Pull","Legs","Push","Pull","Legs","Rest"],
+  days:{
+    "Push":{
+      exercises:[
+        {name:"Band Chest Press",sets:5,reps:"15"},
+        {name:"Band Shoulder Press",sets:5,reps:"15"},
+        {name:"Band Tricep Extension",sets:4,reps:"15"},
+      ]
+    },
+
+    "Pull":{
+      exercises:[
+        {name:"Band Row",sets:5,reps:"15"},
+        {name:"Band Face Pull",sets:4,reps:"15"},
+        {name:"Band Curl",sets:4,reps:"15"},
+      ]
+    },
+
+    "Legs":{
+      exercises:[
+        {name:"Band Squat",sets:5,reps:"20"},
+        {name:"Band Deadlift",sets:5,reps:"15"},
+        {name:"Band Lunges",sets:4,reps:"15"},
+      ]
+    }
+  }
+},
+
+  // ══════════════════════════════════════════════════════
+  // MUSCLE GAIN
+  // ══════════════════════════════════════════════════════
+  "muscle|beginner|3|gym": {
+    split:["Full Body","Rest","Full Body","Rest","Full Body","Rest","Rest"],
+    days:{
+      "Full Body":{
+        focus:"Beginner Full Body Hypertrophy",
+        cardio:"Optional: 10 min light walk",
+        exercises:[
+          {name:"Barbell Back Squat",sets:3,reps:"8-10",rest:"90s",muscle:"Quads/Glutes",tip:"Learn the movement pattern first"},
+          {name:"Flat Barbell Bench Press",sets:3,reps:"8-10",rest:"90s",muscle:"Chest",tip:"Grip slightly wider than shoulder"},
+          {name:"Lat Pulldown",sets:3,reps:"10-12",rest:"75s",muscle:"Back/Lats",tip:"Pull to upper chest"},
+          {name:"Seated DB Shoulder Press",sets:3,reps:"10-12",rest:"75s",muscle:"Shoulders",tip:"Full range of motion"},
+          {name:"Dumbbell Curl",sets:3,reps:"12",rest:"60s",muscle:"Biceps",tip:"Squeeze at top"},
+          {name:"Tricep Pushdown",sets:3,reps:"12",rest:"60s",muscle:"Triceps",tip:"Elbows pinned to sides"},
+          {name:"Plank",sets:3,reps:"30-45s",rest:"45s",muscle:"Core",tip:"Breathe steadily"},
+        ]
+      }
+    }
+  },
+  "muscle|beginner|3|dumbbells": {
+    split:["Full Body","Rest","Full Body","Rest","Full Body","Rest","Rest"],
+    days:{
+      "Full Body":{
+        focus:"Dumbbell Full Body Hypertrophy",
+        cardio:"Skip or 10 min light walk",
+        exercises:[
+          {name:"DB Goblet Squat",sets:3,reps:"10-12",rest:"90s",muscle:"Quads/Glutes",tip:"Slow descent, 3 seconds"},
+          {name:"DB Bench Press",sets:3,reps:"10",rest:"90s",muscle:"Chest",tip:"Feet flat, arch natural"},
+          {name:"DB Bent-Over Row",sets:3,reps:"10/side",rest:"75s",muscle:"Back",tip:"Flat back, row to hip"},
+          {name:"DB Shoulder Press",sets:3,reps:"10-12",rest:"75s",muscle:"Shoulders",tip:"Don't lock out elbows"},
+          {name:"DB Romanian Deadlift",sets:3,reps:"12",rest:"75s",muscle:"Hamstrings",tip:"Feel the stretch in hamstrings"},
+          {name:"DB Curl",sets:3,reps:"12",rest:"60s",muscle:"Biceps",tip:"Supinate wrist at top"},
+          {name:"DB Overhead Tricep Extension",sets:3,reps:"12",rest:"60s",muscle:"Triceps",tip:"Elbows close to head"},
+          {name:"DB Calf Raise",sets:3,reps:"15-20",rest:"30s",muscle:"Calves",tip:"Full range"},
+        ]
+      }
+    }
+  },
+  "muscle|beginner|3|home": {
+    split:["Full Body","Rest","Full Body","Rest","Full Body","Rest","Rest"],
+    days:{
+      "Full Body":{
+        focus:"Bodyweight Muscle Builder",
+        cardio:"None — focus on muscle building",
+        exercises:[
+          {name:"Squat",sets:4,reps:"15",rest:"60s",muscle:"Quads/Glutes",tip:"Add a 3s pause for more tension"},
+          {name:"Push-ups",sets:4,reps:"15-20",rest:"60s",muscle:"Chest/Triceps",tip:"Touch chest to floor"},
+          {name:"Inverted Row (Table)",sets:3,reps:"12",rest:"75s",muscle:"Back/Biceps",tip:"Underhand grip targets biceps"},
+          {name:"Pike Push-up",sets:3,reps:"10-12",rest:"60s",muscle:"Shoulders",tip:"Head goes between arms"},
+          {name:"Glute Bridge",sets:4,reps:"20",rest:"45s",muscle:"Glutes",tip:"Single-leg harder option"},
+          {name:"Tricep Dips (Chair)",sets:3,reps:"15",rest:"60s",muscle:"Triceps",tip:"Keep hips close to chair"},
+          {name:"Plank",sets:3,reps:"45s",rest:"30s",muscle:"Core",tip:"Add shoulder taps for challenge"},
+        ]
+      }
+    }
+  },
+
+  "muscle|intermediate|4|gym": {
+    split:["Chest/Triceps","Back/Biceps","Rest","Legs","Shoulders/Arms","Rest","Rest"],
+    days:{
+      "Chest/Triceps":{
+        focus:"Chest & Triceps Hypertrophy",
+        cardio:"None",
+        exercises:[
+          {name:"Flat Barbell Bench Press",sets:4,reps:"6-10",rest:"120s",muscle:"Chest",tip:"Pause 1s at chest for more activation"},
+          {name:"Incline DB Press",sets:4,reps:"10-12",rest:"90s",muscle:"Upper Chest",tip:"30° incline is optimal"},
+          {name:"Cable Fly",sets:3,reps:"12-15",rest:"75s",muscle:"Chest",tip:"Squeeze at centre"},
+          {name:"Decline Push-up",sets:3,reps:"15",rest:"60s",muscle:"Lower Chest",tip:"Feet elevated on bench"},
+          {name:"Skull Crushers",sets:4,reps:"10-12",rest:"75s",muscle:"Triceps",tip:"EZ bar is easier on wrists"},
+          {name:"Dip (Chest Lean)",sets:3,reps:"10-12",rest:"75s",muscle:"Chest/Triceps",tip:"Lean forward for more chest"},
+          {name:"Tricep Pushdown",sets:3,reps:"12-15",rest:"45s",muscle:"Triceps",tip:"Fully extend each rep"},
+        ]
+      },
+      "Back/Biceps":{
+        focus:"Back & Biceps Hypertrophy",
+        cardio:"None",
+        exercises:[
+          {name:"Weighted Pull-up / Lat Pulldown",sets:4,reps:"6-10",rest:"120s",muscle:"Lats",tip:"Full dead hang, slow pull"},
+          {name:"Barbell Row",sets:4,reps:"8-10",rest:"90s",muscle:"Mid Back",tip:"Row to belly button"},
+          {name:"Cable Seated Row",sets:3,reps:"12",rest:"75s",muscle:"Back",tip:"Keep chest up throughout"},
+          {name:"DB Single-Arm Row",sets:3,reps:"10/side",rest:"60s",muscle:"Back",tip:"Elbow skims rib cage"},
+          {name:"Face Pull",sets:3,reps:"15",rest:"45s",muscle:"Rear Delts",tip:"Rope to forehead"},
+          {name:"Barbell Curl",sets:4,reps:"10",rest:"75s",muscle:"Biceps",tip:"Strict form, no swinging"},
+          {name:"Incline DB Curl",sets:3,reps:"12",rest:"60s",muscle:"Biceps",tip:"Arms hang, great stretch"},
+          {name:"Hammer Curl",sets:3,reps:"12",rest:"45s",muscle:"Brachialis",tip:"Builds arm thickness"},
+        ]
+      },
+      "Legs":{
+        focus:"Leg Hypertrophy Day",
+        cardio:"None",
+        exercises:[
+          {name:"Barbell Squat",sets:4,reps:"8-10",rest:"120s",muscle:"Quads/Glutes",tip:"High bar for quads, low bar for glutes"},
+          {name:"Romanian Deadlift",sets:4,reps:"10",rest:"90s",muscle:"Hamstrings",tip:"Greatest hamstring builder"},
+          {name:"Leg Press",sets:4,reps:"12",rest:"90s",muscle:"Quads",tip:"Don't let knees cave"},
+          {name:"Leg Curl",sets:4,reps:"12",rest:"75s",muscle:"Hamstrings",tip:"Point toes slightly inward"},
+          {name:"Bulgarian Split Squat",sets:3,reps:"10/leg",rest:"90s",muscle:"Quads/Glutes",tip:"Most brutal leg exercise"},
+          {name:"Hip Thrust",sets:3,reps:"12",rest:"75s",muscle:"Glutes",tip:"Bar across hip crease"},
+          {name:"Calf Raise",sets:5,reps:"20",rest:"30s",muscle:"Calves",tip:"Slow and full range"},
+          {name:"Leg Raise",sets:3,reps:"15",rest:"30s",muscle:"Core",tip:"Lower back stays down"},
+        ]
+      },
+      "Shoulders/Arms":{
+        focus:"Shoulders & Arms Hypertrophy",
+        cardio:"None",
+        exercises:[
+          {name:"Seated DB Shoulder Press",sets:4,reps:"10",rest:"90s",muscle:"Shoulders",tip:"Don't arch too much"},
+          {name:"Lateral Raise",sets:4,reps:"15",rest:"45s",muscle:"Side Delts",tip:"Lean slightly forward"},
+          {name:"Rear Delt Fly",sets:3,reps:"15",rest:"45s",muscle:"Rear Delts",tip:"Bent 90° at hips"},
+          {name:"Front Raise",sets:3,reps:"12",rest:"45s",muscle:"Front Delts",tip:"Alternate arms"},
+          {name:"EZ-Bar Curl",sets:4,reps:"10",rest:"60s",muscle:"Biceps",tip:"Supinate fully at top"},
+          {name:"Preacher Curl",sets:3,reps:"12",rest:"60s",muscle:"Biceps Peak",tip:"Don't swing"},
+          {name:"Skull Crusher",sets:3,reps:"12",rest:"60s",muscle:"Triceps",tip:"Keep elbows pointed up"},
+          {name:"Dip (Upright — Tricep Focus)",sets:3,reps:"12",rest:"60s",muscle:"Triceps",tip:"Stay upright, elbows back"},
+        ]
+      }
+    }
+  },
+
+  "muscle|advanced|5|gym": {
+    split:["Chest","Back","Legs","Shoulders","Arms","Rest","Rest"],
+    days:{
+      "Chest":{
+        focus:"Advanced Chest Hypertrophy",
+        cardio:"None",
+        exercises:[
+          {name:"Flat Barbell Bench Press",sets:5,reps:"5-6",rest:"180s",muscle:"Chest",tip:"Explosive up, 3s down"},
+          {name:"Incline Barbell Press",sets:4,reps:"8",rest:"120s",muscle:"Upper Chest",tip:"Wider grip for more chest"},
+          {name:"Weighted Dip",sets:4,reps:"8-10",rest:"90s",muscle:"Chest/Triceps",tip:"Lean forward for chest focus"},
+          {name:"Cable Fly (Low-to-High)",sets:4,reps:"12",rest:"60s",muscle:"Lower Chest",tip:"Arc motion upward"},
+          {name:"DB Incline Fly",sets:3,reps:"12-15",rest:"60s",muscle:"Chest",tip:"Deep stretch at bottom"},
+          {name:"Push-up (Weighted Vest)",sets:3,reps:"15-20",rest:"60s",muscle:"Chest/Triceps",tip:"Finisher — high reps"},
+        ]
+      },
+      "Back":{
+        focus:"Advanced Back Hypertrophy",
+        cardio:"None",
+        exercises:[
+          {name:"Weighted Pull-up",sets:5,reps:"5-6",rest:"180s",muscle:"Lats",tip:"Add 10-20kg via belt"},
+          {name:"Barbell Deadlift (Romanian style)",sets:4,reps:"8",rest:"120s",muscle:"Back/Hamstrings",tip:"Keep bar close to body"},
+          {name:"T-Bar Row",sets:4,reps:"8-10",rest:"90s",muscle:"Mid Back/Thickness",tip:"Row explosively"},
+          {name:"Wide-Grip Cable Row",sets:4,reps:"10-12",rest:"75s",muscle:"Upper Back",tip:"Elbows out, not in"},
+          {name:"Straight-Arm Pulldown",sets:3,reps:"15",rest:"60s",muscle:"Lats",tip:"Great for lat isolation"},
+          {name:"Meadow Row",sets:3,reps:"10/side",rest:"60s",muscle:"Back Width",tip:"Barbell landmine row"},
+          {name:"Shrug",sets:4,reps:"15",rest:"45s",muscle:"Traps",tip:"Straight up, no rolls"},
+        ]
+      },
+      "Legs":{
+        focus:"Advanced Leg Hypertrophy",
+        cardio:"None",
+        exercises:[
+          {name:"Barbell Back Squat",sets:5,reps:"5-6",rest:"180s",muscle:"Quads/Glutes",tip:"Low bar for max weight"},
+          {name:"Front Squat",sets:3,reps:"8",rest:"120s",muscle:"Quads",tip:"Elbows high, upright torso"},
+          {name:"Romanian Deadlift",sets:4,reps:"8",rest:"120s",muscle:"Hamstrings",tip:"Controlled descent always"},
+          {name:"Leg Press (High Foot Placement)",sets:4,reps:"10-12",rest:"90s",muscle:"Glutes/Hamstrings",tip:"Maximises posterior chain"},
+          {name:"Hack Squat",sets:3,reps:"10",rest:"90s",muscle:"Quads",tip:"Great quad separation tool"},
+          {name:"Leg Curl",sets:4,reps:"10",rest:"75s",muscle:"Hamstrings",tip:"Toes in = more bicep femoris"},
+          {name:"Hip Thrust (Heavy)",sets:4,reps:"10",rest:"90s",muscle:"Glutes",tip:"200kg+ possible here"},
+          {name:"Seated Calf Raise",sets:5,reps:"15",rest:"30s",muscle:"Soleus",tip:"Seated targets deeper soleus"},
+        ]
+      },
+      "Shoulders":{
+        focus:"Advanced Shoulder Hypertrophy",
+        cardio:"None",
+        exercises:[
+          {name:"Standing Barbell Press",sets:5,reps:"6-8",rest:"120s",muscle:"Shoulders",tip:"Full body brace"},
+          {name:"Seated DB Press",sets:4,reps:"10",rest:"90s",muscle:"Shoulders",tip:"Full range overhead"},
+          {name:"Cable Lateral Raise (Unilateral)",sets:4,reps:"15/side",rest:"45s",muscle:"Side Delts",tip:"Cross-body cable for better arc"},
+          {name:"Lateral Raise (DB)",sets:4,reps:"20",rest:"30s",muscle:"Side Delts",tip:"Drop set finisher"},
+          {name:"Face Pull",sets:4,reps:"15",rest:"45s",muscle:"Rear Delts/Rotator Cuff",tip:"Essential shoulder health"},
+          {name:"Rear Delt Machine Fly",sets:3,reps:"15",rest:"45s",muscle:"Rear Delts",tip:"Slight forward lean"},
+          {name:"DB Upright Row",sets:3,reps:"12",rest:"60s",muscle:"Traps/Side Delts",tip:"Elbows drive up"},
+          {name:"Barbell Shrug",sets:4,reps:"15",rest:"45s",muscle:"Traps",tip:"Dead hang at bottom"},
+        ]
+      },
+      "Arms":{
+        focus:"Arm Specialisation Day",
+        cardio:"None",
+        exercises:[
+          {name:"Barbell Curl",sets:4,reps:"8",rest:"90s",muscle:"Biceps",tip:"Heaviest curl of the week"},
+          {name:"Incline DB Curl",sets:3,reps:"12",rest:"60s",muscle:"Biceps Long Head",tip:"Best long head stretch"},
+          {name:"Preacher Curl (Machine or EZ)",sets:3,reps:"12",rest:"60s",muscle:"Biceps Peak",tip:"Full extension at bottom"},
+          {name:"Hammer Curl",sets:3,reps:"12",rest:"60s",muscle:"Brachialis",tip:"Neutral wrist, controlled"},
+          {name:"Close-Grip Bench Press",sets:4,reps:"8-10",rest:"90s",muscle:"Triceps",tip:"Heaviest tricep movement"},
+          {name:"Skull Crushers",sets:4,reps:"10",rest:"75s",muscle:"Triceps Long Head",tip:"EZ bar, elbows fixed"},
+          {name:"Overhead Rope Ext.",sets:3,reps:"12",rest:"60s",muscle:"Triceps Long Head",tip:"Best stretch position"},
+          {name:"Tricep Dip (BW or Weighted)",sets:3,reps:"12",rest:"60s",muscle:"Triceps",tip:"Full extension at top"},
+        ]
+      }
+    }
+  },
+
+  // ══════════════════════════════════════════════════════
+  // STRENGTH
+  // ══════════════════════════════════════════════════════
+  "strength|beginner|3|gym": {
+    split:["Squat Day","Press Day","Rest","Deadlift Day","Rest","Rest","Rest"],
+    days:{
+      "Squat Day":{
+        focus:"Squat Focus — Leg Strength",
+        cardio:"None",
+        exercises:[
+          {name:"Barbell Back Squat",sets:3,reps:"5",rest:"180s",muscle:"Quads/Glutes",tip:"Linear progression — add 2.5kg each session"},
+          {name:"Romanian Deadlift",sets:3,reps:"8",rest:"120s",muscle:"Hamstrings",tip:"Accessory for posterior chain"},
+          {name:"Leg Press",sets:3,reps:"10",rest:"90s",muscle:"Quads",tip:"Volume accessory"},
+          {name:"Plank",sets:3,reps:"45s",rest:"45s",muscle:"Core",tip:"Strong core = stronger squat"},
+          {name:"Ab Crunch",sets:3,reps:"15",rest:"30s",muscle:"Core",tip:"Controlled reps"},
+        ]
+      },
+      "Press Day":{
+        focus:"Press Focus — Upper Body Strength",
+        cardio:"None",
+        exercises:[
+          {name:"Barbell Bench Press",sets:3,reps:"5",rest:"180s",muscle:"Chest",tip:"Add 2.5kg every session (linear progression)"},
+          {name:"Overhead Press",sets:3,reps:"5",rest:"180s",muscle:"Shoulders",tip:"Hardest to progress — be patient"},
+          {name:"Dumbbell Row",sets:3,reps:"8-10/side",rest:"90s",muscle:"Back",tip:"Stay balanced for pressing strength"},
+          {name:"Dip",sets:3,reps:"8-10",rest:"90s",muscle:"Chest/Triceps",tip:"Accessory pressing"},
+          {name:"Barbell Curl",sets:3,reps:"10",rest:"60s",muscle:"Biceps",tip:"Arm health for pressing"},
+        ]
+      },
+      "Deadlift Day":{
+        focus:"Deadlift Focus — Posterior Chain",
+        cardio:"None",
+        exercises:[
+          {name:"Barbell Deadlift",sets:1,reps:"5",rest:"240s",muscle:"Full Body",tip:"1 heavy set — add 5kg each session"},
+          {name:"Barbell Row",sets:3,reps:"5",rest:"120s",muscle:"Back",tip:"5×5 pairing with deadlift"},
+          {name:"Chin-up",sets:3,reps:"5-8",rest:"120s",muscle:"Back/Biceps",tip:"Add weight when easy"},
+          {name:"Good Morning",sets:3,reps:"10",rest:"90s",muscle:"Hamstrings/Lower Back",tip:"Light — builds back strength"},
+          {name:"Farmer's Walk",sets:3,reps:"20m",rest:"90s",muscle:"Grip/Full Body",tip:"Builds grip for deadlift"},
+        ]
+      }
+    }
+  },
+  "strength|intermediate|4|gym": {
+    split:["Heavy Squat","Heavy Press","Rest","Heavy Deadlift","Upper Accessory","Rest","Rest"],
+    days:{
+      "Heavy Squat":{
+        focus:"Squat — Intermediate Strength",
+        cardio:"None",
+        exercises:[
+          {name:"Barbell Back Squat",sets:5,reps:"5",rest:"240s",muscle:"Quads/Glutes",tip:"5×5 protocol — same weight until all sets complete"},
+          {name:"Front Squat",sets:3,reps:"5",rest:"180s",muscle:"Quads",tip:"Builds quad strength for back squat"},
+          {name:"Romanian Deadlift",sets:3,reps:"8",rest:"120s",muscle:"Hamstrings",tip:"Controls descent under load"},
+          {name:"Leg Press",sets:3,reps:"8",rest:"90s",muscle:"Quads",tip:"Heavy accessory"},
+          {name:"Weighted Plank",sets:3,reps:"45s",rest:"60s",muscle:"Core",tip:"Plate on back"},
+        ]
+      },
+      "Heavy Press":{
+        focus:"Bench & OHP — Upper Strength",
+        cardio:"None",
+        exercises:[
+          {name:"Barbell Bench Press",sets:5,reps:"5",rest:"240s",muscle:"Chest",tip:"Competition grip width"},
+          {name:"Standing Overhead Press",sets:5,reps:"5",rest:"240s",muscle:"Shoulders",tip:"Full body press — brace hard"},
+          {name:"Weighted Dip",sets:3,reps:"6-8",rest:"120s",muscle:"Chest/Triceps",tip:"Add weight via belt"},
+          {name:"Bent-Over Row",sets:5,reps:"5",rest:"180s",muscle:"Back",tip:"Balance the press with pull"},
+          {name:"Skull Crusher",sets:3,reps:"8",rest:"90s",muscle:"Triceps",tip:"Triceps extend the lockout"},
+        ]
+      },
+      "Heavy Deadlift":{
+        focus:"Deadlift Day — Maximum Pull Strength",
+        cardio:"None",
+        exercises:[
+          {name:"Barbell Deadlift",sets:5,reps:"3-5",rest:"300s",muscle:"Full Body",tip:"Conventional — add 5kg when all reps completed"},
+          {name:"Sumo Deadlift",sets:3,reps:"5",rest:"180s",muscle:"Inner Thigh/Glutes",tip:"Different motor pattern"},
+          {name:"Good Morning",sets:3,reps:"8",rest:"120s",muscle:"Hamstrings/Spinal Erectors",tip:"Never heavy — technique only"},
+          {name:"Farmer's Walk",sets:4,reps:"30m",rest:"120s",muscle:"Grip/Traps/Core",tip:"Heaviest you can walk with"},
+          {name:"Hanging Leg Raise",sets:3,reps:"12",rest:"45s",muscle:"Core",tip:"Builds deadlift core strength"},
+        ]
+      },
+      "Upper Accessory":{
+        focus:"Upper Body Volume Accessory",
+        cardio:"None",
+        exercises:[
+          {name:"Pull-up (Weighted)",sets:4,reps:"6",rest:"120s",muscle:"Back/Lats",tip:"Pull strength carries to deadlift"},
+          {name:"DB Row",sets:4,reps:"10/side",rest:"75s",muscle:"Back",tip:"Strict form focus"},
+          {name:"DB Bench Press",sets:4,reps:"10",rest:"90s",muscle:"Chest",tip:"Volume after heavy bench days"},
+          {name:"DB Lateral Raise",sets:4,reps:"15",rest:"45s",muscle:"Shoulders",tip:"Shoulder health accessory"},
+          {name:"Barbell Curl",sets:3,reps:"10",rest:"60s",muscle:"Biceps",tip:"Bicep helps deadlift lockout"},
+          {name:"Tricep Pushdown",sets:3,reps:"12",rest:"45s",muscle:"Triceps",tip:"Lockout strength"},
+        ]
+      }
+    }
+  },
+  "strength|advanced|5|gym": {
+    split:["Squat","Bench","Deadlift","OHP","Accessory","Rest","Rest"],
+    days:{
+      "Squat":{
+        focus:"Competition Squat Training",
+        cardio:"None",
+        exercises:[
+          {name:"Barbell Back Squat",sets:5,reps:"3",rest:"300s",muscle:"Full Body",tip:"Competition depth — below parallel"},
+          {name:"Pause Squat",sets:3,reps:"3",rest:"240s",muscle:"Quads",tip:"2s pause at bottom"},
+          {name:"Box Squat",sets:3,reps:"3",rest:"240s",muscle:"Posterior Chain",tip:"Sit back on box, explode up"},
+          {name:"Romanian Deadlift",sets:4,reps:"5",rest:"180s",muscle:"Hamstrings",tip:"Heavy and strict"},
+          {name:"Weighted Plank",sets:3,reps:"60s",rest:"60s",muscle:"Core",tip:"25kg plate on back"},
+          {name:"GHD Raise",sets:3,reps:"10",rest:"90s",muscle:"Hamstrings/Glutes",tip:"Advanced back support"},
+        ]
+      },
+      "Bench":{
+        focus:"Competition Bench Training",
+        cardio:"None",
+        exercises:[
+          {name:"Barbell Bench Press",sets:5,reps:"3",rest:"300s",muscle:"Chest",tip:"Competition pause at chest"},
+          {name:"Close-Grip Bench Press",sets:4,reps:"5",rest:"180s",muscle:"Triceps",tip:"Lockout strength"},
+          {name:"Board Press",sets:3,reps:"3",rest:"240s",muscle:"Chest/Triceps",tip:"Overload the top end"},
+          {name:"DB Fly",sets:3,reps:"10",rest:"75s",muscle:"Chest",tip:"Pec health and stretch"},
+          {name:"Weighted Dip",sets:3,reps:"6",rest:"120s",muscle:"Chest/Triceps",tip:"Belt squat + chains"},
+          {name:"Tricep Pushdown",sets:4,reps:"12",rest:"45s",muscle:"Triceps",tip:"Volume finisher"},
+        ]
+      },
+      "Deadlift":{
+        focus:"Competition Deadlift Training",
+        cardio:"None",
+        exercises:[
+          {name:"Barbell Deadlift",sets:5,reps:"3",rest:"360s",muscle:"Full Body",tip:"Mixed grip or straps for max"},
+          {name:"Deficit Deadlift",sets:3,reps:"3",rest:"240s",muscle:"Full Body",tip:"Stand on 2-inch plate"},
+          {name:"Rack Pull",sets:3,reps:"3",rest:"240s",muscle:"Back/Traps",tip:"Above knee — overload lockout"},
+          {name:"Good Morning",sets:3,reps:"5",rest:"180s",muscle:"Hamstrings/Back",tip:"Moderate weight"},
+          {name:"Farmer's Walk",sets:4,reps:"40m",rest:"180s",muscle:"Grip/Core",tip:"As heavy as possible"},
+          {name:"Plank",sets:3,reps:"60s",rest:"60s",muscle:"Core",tip:"Strict"},
+        ]
+      },
+      "OHP":{
+        focus:"Overhead Strength Day",
+        cardio:"None",
+        exercises:[
+          {name:"Standing Barbell OHP",sets:5,reps:"3-5",rest:"240s",muscle:"Shoulders",tip:"Full press from rack"},
+          {name:"Push Press",sets:4,reps:"3",rest:"180s",muscle:"Shoulders/Legs",tip:"Leg drive teaches bar speed"},
+          {name:"Seated DB Press",sets:3,reps:"8",rest:"120s",muscle:"Shoulders",tip:"Volume accessory"},
+          {name:"Lateral Raise",sets:4,reps:"15",rest:"45s",muscle:"Side Delts",tip:"Shoulder width and health"},
+          {name:"Face Pull",sets:4,reps:"15",rest:"45s",muscle:"Rear Delts/RC",tip:"Non-negotiable for shoulder health"},
+          {name:"Pull-up",sets:4,reps:"6-8",rest:"120s",muscle:"Back/Lats",tip:"Balances overhead pressing"},
+        ]
+      },
+      "Accessory":{
+        focus:"Hypertrophy Accessory Day",
+        cardio:"None",
+        exercises:[
+          {name:"DB Row",sets:4,reps:"10/side",rest:"75s",muscle:"Back",tip:"Upper back helps bench and deadlift"},
+          {name:"Incline DB Press",sets:4,reps:"10",rest:"90s",muscle:"Chest",tip:"Volume work for bench"},
+          {name:"Leg Curl",sets:4,reps:"12",rest:"75s",muscle:"Hamstrings",tip:"Isolation for deadlift"},
+          {name:"Hip Thrust",sets:4,reps:"10",rest:"90s",muscle:"Glutes",tip:"Posterior chain assistance"},
+          {name:"Barbell Curl",sets:3,reps:"10",rest:"60s",muscle:"Biceps",tip:"Biceps assist deadlift"},
+          {name:"Skull Crusher",sets:3,reps:"10",rest:"60s",muscle:"Triceps",tip:"Triceps assist bench lockout"},
+          {name:"Ab Wheel",sets:3,reps:"10",rest:"60s",muscle:"Core",tip:"Core for all 3 lifts"},
+        ]
+      }
+    }
+  },
+
+  // ══════════════════════════════════════════════════════
+  // BEGINNER FITNESS (General)
+  // ══════════════════════════════════════════════════════
+  "beginner-fitness|beginner|3|gym": {
+    split:["Full Body A","Rest","Full Body B","Rest","Full Body A","Rest","Rest"],
+    days:{
+      "Full Body A":{
+        focus:"Learn Movement Patterns — Session A",
+        cardio:"15 min treadmill walk",
+        exercises:[
+          {name:"Leg Press",sets:3,reps:"12",rest:"60s",muscle:"Quads/Glutes",tip:"Safer than squat for absolute beginners"},
+          {name:"Chest Press Machine",sets:3,reps:"12",rest:"60s",muscle:"Chest",tip:"Learn the push pattern first"},
+          {name:"Lat Pulldown",sets:3,reps:"12",rest:"60s",muscle:"Back/Lats",tip:"Learn the pull pattern"},
+          {name:"Shoulder Press Machine",sets:3,reps:"12",rest:"60s",muscle:"Shoulders",tip:"Fixed path is safer"},
+          {name:"Leg Curl Machine",sets:3,reps:"12",rest:"60s",muscle:"Hamstrings",tip:"Isolated — good for beginners"},
+          {name:"Plank",sets:3,reps:"20-30s",rest:"45s",muscle:"Core",tip:"Build up to 60s over time"},
+        ]
+      },
+      "Full Body B":{
+        focus:"Free Weight Introduction — Session B",
+        cardio:"15 min treadmill walk",
+        exercises:[
+          {name:"Goblet Squat (Dumbbell)",sets:3,reps:"10",rest:"75s",muscle:"Quads/Glutes",tip:"Transition to free weights"},
+          {name:"Push-up (Modified if needed)",sets:3,reps:"8-12",rest:"60s",muscle:"Chest",tip:"Knees down is perfectly fine"},
+          {name:"DB Row",sets:3,reps:"10/side",rest:"60s",muscle:"Back",tip:"Control the weight"},
+          {name:"DB Shoulder Press",sets:3,reps:"10",rest:"60s",muscle:"Shoulders",tip:"Seated for stability"},
+          {name:"DB Romanian Deadlift",sets:3,reps:"10",rest:"75s",muscle:"Hamstrings",tip:"Feel the hip hinge"},
+          {name:"Dead Bug",sets:3,reps:"8/side",rest:"45s",muscle:"Core",tip:"Great for spinal stability"},
+        ]
+      }
+    }
+  },
+  "beginner-fitness|beginner|3|home": {
+    split:["Full Body A","Rest","Full Body B","Rest","Full Body A","Rest","Rest"],
+    days:{
+      "Full Body A":{
+        focus:"Beginner Home — Session A",
+        cardio:"15 min walk",
+        exercises:[
+          {name:"Squat",sets:3,reps:"15",rest:"45s",muscle:"Quads/Glutes",tip:"Learn the movement — no weight needed"},
+          {name:"Push-up (Modified if needed)",sets:3,reps:"8-10",rest:"60s",muscle:"Chest/Triceps",tip:"Knees ok at first"},
+          {name:"Glute Bridge",sets:3,reps:"15",rest:"45s",muscle:"Glutes",tip:"Squeeze at top"},
+          {name:"Bird Dog",sets:3,reps:"10/side",rest:"45s",muscle:"Core/Back",tip:"Slow and controlled"},
+          {name:"Wall Sit",sets:3,reps:"30s",rest:"45s",muscle:"Quads",tip:"Back flat on wall"},
+          {name:"Superman",sets:3,reps:"12",rest:"30s",muscle:"Lower Back",tip:"Hold 2 seconds"},
+        ]
+      },
+      "Full Body B":{
+        focus:"Beginner Home — Session B",
+        cardio:"15 min walk",
+        exercises:[
+          {name:"Reverse Lunge",sets:3,reps:"10/leg",rest:"60s",muscle:"Quads/Glutes",tip:"Easier on knees than forward lunge"},
+          {name:"Wide Push-up",sets:3,reps:"8-10",rest:"60s",muscle:"Chest",tip:"Elbows at 90°"},
+          {name:"Inverted Row (Table)",sets:3,reps:"8",rest:"75s",muscle:"Back",tip:"Keep body straight"},
+          {name:"Pike Push-up",sets:3,reps:"8",rest:"60s",muscle:"Shoulders",tip:"Hips high, head between arms"},
+          {name:"Plank",sets:3,reps:"30s",rest:"30s",muscle:"Core",tip:"Breathe steadily"},
+          {name:"Calf Raise",sets:3,reps:"20",rest:"30s",muscle:"Calves",tip:"Use a step for range"},
+        ]
+      }
+    }
+  },
+};
+
+// Build a lookup function with smart fallback
+function getPlan(goal, level, days, equipment) {
+  const key = `${goal}|${level}|${days}|${equipment}`;
+  if (WDB[key]) return WDB[key];
+  // Fallback: try gym equipment
+  const keyGym = `${goal}|${level}|${days}|gym`;
+  if (WDB[keyGym]) return WDB[keyGym];
+  // Fallback: try intermediate
+  const keyInt = `${goal}|intermediate|${days}|gym`;
+  if (WDB[keyInt]) return WDB[keyInt];
+  // Fallback: try 4 days
+  const key4 = `${goal}|intermediate|4|gym`;
+  if (WDB[key4]) return WDB[key4];
+  // Ultimate fallback
+  const firstKey = Object.keys(WDB).find(k => k.startsWith(goal));
+  return WDB[firstKey] || WDB[Object.keys(WDB)[0]];
+}
+
+const DAYS_OF_WEEK = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+
+function ExerciseTable({ exercises }) {
+  return (
+    <div style={{ background:C.card, border:`1px solid ${C.border}`, borderRadius:4, overflow:"hidden" }}>
+      <div style={{ display:"grid", gridTemplateColumns:"2.5fr 0.6fr 1fr 0.8fr 1.5fr", background:C.bg3, padding:"10px 18px", fontSize:10, letterSpacing:2, color:C.muted, textTransform:"uppercase" }}>
+        <span>Exercise</span><span>Sets</span><span>Reps</span><span>Rest</span><span>Muscle</span>
+      </div>
+      {exercises.map((ex, i) => (
+        <div key={i} style={{ display:"grid", gridTemplateColumns:"2.5fr 0.6fr 1fr 0.8fr 1.5fr", padding:"13px 18px", borderTop:`1px solid ${C.border}`, alignItems:"start", background: i%2===0 ? "transparent" : "rgba(255,255,255,0.01)" }}>
+          <div>
+            <div style={{ fontSize:14, color:C.text, fontWeight:600 }}>{ex.name}</div>
+            {ex.tip && <div style={{ fontSize:11, color:C.muted, marginTop:2, fontStyle:"italic" }}>💡 {ex.tip}</div>}
+          </div>
+          <span style={{ color:C.red, fontSize:15, fontWeight:700 }}>{ex.sets}</span>
+          <span style={{ color:C.text, fontSize:13 }}>{ex.reps}</span>
+          <span style={{ color:C.muted, fontSize:13 }}>{ex.rest}</span>
+          <span style={{ color:C.muted, fontSize:12 }}>{ex.muscle}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function WorkoutPage() {
+  const [goal, setGoal] = useState("muscle");
+  const [level, setLevel] = useState("intermediate");
+  const [days, setDays] = useState(4);
+  const [equipment, setEquipment] = useState("gym");
+  const [generated, setGenerated] = useState(false);
+  const [selectedDay, setSelectedDay] = useState(null);
+
+  const plan = generated ? getPlan(goal, level, days, equipment) : null;
+
+  const handleGenerate = () => {
+    setGenerated(false);
+    setTimeout(() => {
+      const p = getPlan(goal, level, days, equipment);
+      setGenerated(true);
+      // Auto-select first training day
+      const firstTrainingIdx = p.split.findIndex(s => s !== "Rest");
+      setSelectedDay(firstTrainingIdx >= 0 ? firstTrainingIdx : 0);
+    }, 50);
+  };
+
+  // Get unique day labels from split (exclude Rest, deduplicate)
+  const trainingDayNames = plan ? [...new Set(plan.split.filter(s => s !== "Rest"))] : [];
+  const selectedDayName = plan && selectedDay !== null ? plan.split[selectedDay] : null;
+  const dayData = plan && selectedDayName && selectedDayName !== "Rest" ? plan.days[selectedDayName] : null;
+
+  const selStyle = { width:"100%", background:C.bg3, border:`1px solid ${C.border}`, color:C.text, padding:"12px 14px", borderRadius:2, fontSize:14, outline:"none", cursor:"pointer" };
+  const btnGroupStyle = (active) => ({ flex:1, padding:"11px 8px", background:active?C.red:"transparent", border:`1px solid ${active?C.red:C.border}`, color:active?"#fff":C.muted, borderRadius:2, cursor:"pointer", fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, letterSpacing:1, textTransform:"uppercase", transition:"all 0.2s" });
+
+  return (
+    <div style={{ minHeight:"100vh", background:C.bg, paddingTop:80 }}>
+      {/* Header */}
+      <div style={{ background:`linear-gradient(135deg, ${C.bg} 0%, #0f0000 100%)`, padding:"40px 4vw 30px", borderBottom:`1px solid ${C.border}` }}>
+        <div style={{ maxWidth:1100, margin:"0 auto" }}>
+          <Tag>Training Tool</Tag>
+          <h1 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:"clamp(48px,6vw,80px)", lineHeight:0.95, marginBottom:6 }}>
+            Workout <span style={{ color:C.red }}>Planner</span>
+          </h1>
+          <div style={{ width:60, height:3, background:C.red, borderRadius:2, margin:"12px 0 16px" }} />
+          <p style={{ color:C.muted, fontSize:15, maxWidth:560 }}>
+            Select your goal, experience, schedule and equipment. Get a complete weekly plan with clickable daily workouts.
+          </p>
+        </div>
+      </div>
+
+      <div style={{ maxWidth:1100, margin:"0 auto", padding:"30px 4vw" }}>
+        {/* Config Panel */}
+        <div style={{ background:C.card, border:`1px solid ${C.border}`, borderRadius:4, padding:"24px 24px 20px", marginBottom:24 }}>
+          <div style={{ fontSize:11, letterSpacing:3, color:C.red, textTransform:"uppercase", marginBottom:16 }}>Configure Your Plan</div>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, marginBottom:16 }}>
+            {/* Goal */}
+            <div>
+              <label style={{ fontSize:11, letterSpacing:2, color:C.muted, textTransform:"uppercase", display:"block", marginBottom:8 }}>Goal</label>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:6 }}>
+                {[{v:"fat-loss",l:"🔥 Fat Loss"},{v:"muscle",l:"💪 Muscle Gain"},{v:"strength",l:"⚡ Strength"},{v:"beginner-fitness",l:"🌱 Beginner"}].map(g => (
+                  <button key={g.v} onClick={()=>setGoal(g.v)} style={btnGroupStyle(goal===g.v)}>{g.l}</button>
+                ))}
+              </div>
+            </div>
+            {/* Experience */}
+            <div>
+              <label style={{ fontSize:11, letterSpacing:2, color:C.muted, textTransform:"uppercase", display:"block", marginBottom:8 }}>Experience Level</label>
+              <div style={{ display:"flex", gap:6 }}>
+                {[{v:"beginner",l:"Beginner"},{v:"intermediate",l:"Intermediate"},{v:"advanced",l:"Advanced"}].map(e => (
+                  <button key={e.v} onClick={()=>setLevel(e.v)} style={btnGroupStyle(level===e.v)}>{e.l}</button>
+                ))}
+              </div>
+            </div>
+            {/* Equipment */}
+            <div>
+              <label style={{ fontSize:11, letterSpacing:2, color:C.muted, textTransform:"uppercase", display:"block", marginBottom:8 }}>Equipment</label>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:6 }}>
+                {[{v:"gym",l:"🏋️ Full Gym"},{v:"dumbbells",l:"🪙 Dumbbells"},{v:"home",l:"🏠 No Equipment"},{v:"bands",l:"🎗 Bands"}].map(e => (
+                  <button key={e.v} onClick={()=>setEquipment(e.v)} style={btnGroupStyle(equipment===e.v)}>{e.l}</button>
+                ))}
+              </div>
+            </div>
+            {/* Days per week */}
+            <div>
+              <label style={{ fontSize:11, letterSpacing:2, color:C.muted, textTransform:"uppercase", display:"block", marginBottom:8 }}>Days Per Week</label>
+              <div style={{ display:"flex", gap:6 }}>
+                {[3,4,5,6].map(d => (
+                  <button key={d} onClick={()=>setDays(d)} style={{ ...btnGroupStyle(days===d), flex:1, padding:"11px 4px", fontSize:18, fontFamily:"'Bebas Neue',sans-serif", letterSpacing:1 }}>{d}</button>
+                ))}
+              </div>
+              <div style={{ fontSize:11, color:C.muted, marginTop:6 }}>Select training days per week</div>
+            </div>
+          </div>
+          <button onClick={handleGenerate} style={{ width:"100%", padding:"15px", background:C.red, border:"none", color:"#fff", fontFamily:"'Barlow Condensed',sans-serif", fontSize:15, letterSpacing:3, textTransform:"uppercase", borderRadius:2, cursor:"pointer", transition:"background 0.2s" }}
+            onMouseEnter={e=>e.target.style.background=C.redDark}
+            onMouseLeave={e=>e.target.style.background=C.red}>
+            ⚡ Generate My Workout Plan
+          </button>
+        </div>
+
+        {/* Plan Output */}
+        {generated && plan && (
+          <>
+            {/* Weekly Calendar */}
+            <div style={{ background:C.bg3, border:`1px solid ${C.border}`, borderRadius:4, padding:"20px 20px 16px", marginBottom:16 }}>
+              <div style={{ fontSize:11, letterSpacing:3, color:C.red, textTransform:"uppercase", marginBottom:14 }}>Weekly Split — Click a Day to View Workout</div>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:8 }}>
+                {DAYS_OF_WEEK.map((d, i) => {
+                  const dayName = plan.split[i];
+                  const isRest = dayName === "Rest";
+                  const isActive = selectedDay === i;
+                  return (
+                    <div key={d} onClick={() => !isRest && setSelectedDay(i)}
+                      style={{ background: isActive ? C.red : isRest ? C.bg : C.card, border:`2px solid ${isActive ? C.red : isRest ? C.border : C.borderHot}`, borderRadius:4, padding:"12px 6px", textAlign:"center", cursor:isRest?"default":"pointer", transition:"all 0.2s", transform:isActive?"scale(1.05)":"scale(1)", opacity:isRest?0.45:1 }}>
+                      <div style={{ fontSize:11, color:isActive?"rgba(255,255,255,0.7)":C.muted, marginBottom:5, fontFamily:"'Barlow Condensed',sans-serif", letterSpacing:2 }}>{d}</div>
+                      <div style={{ fontSize:11, color:isActive?"#fff":isRest?C.muted:C.red, fontWeight:700, fontFamily:"'Barlow Condensed',sans-serif", letterSpacing:1, lineHeight:1.3 }}>{dayName}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Day Workout Detail */}
+            {selectedDayName && selectedDayName !== "Rest" && dayData ? (
+              <div>
+                {/* Day header */}
+                <div style={{ background:`linear-gradient(135deg, #1a0000, #0a0a0a)`, border:`1px solid ${C.borderHot}`, borderRadius:4, padding:"20px 24px", marginBottom:14, display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:12 }}>
+                  <div>
+                    <div style={{ fontSize:11, letterSpacing:3, color:C.red, textTransform:"uppercase", marginBottom:4 }}>
+                      {DAYS_OF_WEEK[selectedDay]} — {selectedDayName}
+                    </div>
+                    <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:34, lineHeight:1 }}>{dayData.focus}</div>
+                  </div>
+                  <div style={{ background:"rgba(232,0,42,0.1)", border:`1px solid ${C.borderHot}`, borderRadius:2, padding:"10px 16px", fontSize:13, color:C.text }}>
+                    <div style={{ fontSize:10, color:C.red, letterSpacing:2, textTransform:"uppercase", marginBottom:3 }}>Cardio / Conditioning</div>
+                    {dayData.cardio}
+                  </div>
+                </div>
+
+                {/* Quick stats */}
+                <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:10, marginBottom:14 }}>
+                  {[
+                    { label:"Exercises", val:dayData.exercises.length },
+                    { label:"Total Sets", val:dayData.exercises.reduce((a,e)=>a+e.sets,0) },
+                    { label:"Est. Time", val:`${Math.round(dayData.exercises.reduce((a,e)=>{const rest=parseInt(e.rest)||60;return a+(e.sets*(40+(rest)))},0)/60)} min` },
+                    { label:"Focus", val:selectedDayName.split("/")[0] },
+                  ].map(s => (
+                    <div key={s.label} style={{ background:C.card, border:`1px solid ${C.border}`, borderRadius:4, padding:"14px 12px", textAlign:"center" }}>
+                      <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:28, color:C.red }}>{s.val}</div>
+                      <div style={{ fontSize:10, color:C.muted, letterSpacing:2, textTransform:"uppercase" }}>{s.label}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Exercise table */}
+                <ExerciseTable exercises={dayData.exercises} />
+
+                {/* Tips */}
+                <div style={{ marginTop:14, padding:"16px 20px", background:`rgba(232,0,42,0.04)`, border:`1px solid ${C.borderHot}`, borderRadius:4, fontSize:13, color:C.muted, lineHeight:1.8 }}>
+                  <div style={{ color:C.red, fontFamily:"'Barlow Condensed',sans-serif", fontSize:14, letterSpacing:2, textTransform:"uppercase", marginBottom:6 }}>Training Notes</div>
+                  <span style={{ color:C.red }}>Progressive Overload:</span> Increase weight by the smallest increment available each week once you complete all sets at current weight with good form.{" "}
+                  <span style={{ color:C.red }}>Rest:</span> Times shown are minimums — take more if needed for heavy lifts.{" "}
+                  <span style={{ color:C.red }}>Recovery:</span> Sleep 7–9 hours, eat enough protein (1.6–2.2g/kg bodyweight), and stay consistent.
+                </div>
+
+                {/* Day navigation */}
+                <div style={{ display:"flex", gap:10, marginTop:14, flexWrap:"wrap" }}>
+                  {plan.split.map((name, i) => name !== "Rest" && (
+                    <button key={i} onClick={() => setSelectedDay(i)}
+                      style={{ padding:"9px 18px", background:selectedDay===i?C.red:"transparent", border:`1px solid ${selectedDay===i?C.red:C.border}`, color:selectedDay===i?"#fff":C.muted, borderRadius:2, cursor:"pointer", fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, letterSpacing:2, textTransform:"uppercase", transition:"all 0.2s" }}>
+                      {DAYS_OF_WEEK[i]}: {name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : selectedDayName === "Rest" ? (
+              <div style={{ background:C.card, border:`1px solid ${C.border}`, borderRadius:4, padding:"40px", textAlign:"center" }}>
+                <div style={{ fontSize:48, marginBottom:12 }}>😴</div>
+                <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:36, marginBottom:8 }}>Rest Day</div>
+                <div style={{ color:C.muted, fontSize:14, lineHeight:1.7, maxWidth:400, margin:"0 auto" }}>
+                  Recovery is where growth happens. Light walking, stretching, or yoga is fine. Eat your protein, sleep 8 hours, and come back stronger tomorrow.
+                </div>
+              </div>
+            ) : null}
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
 
 // ─── DIET PLAN PAGE ───────────────────────────────────────────────
 const dietPlans = {
@@ -1843,7 +4267,7 @@ export default function App() {
       case "bmi": return <BMIPage />;
       case "bmr": return <BMRPage />;
       case "idealweight": return <IdealWeightPage />;
-      // case "workout": return <WorkoutPage />;
+      case "workout": return <WorkoutPage />;
       case "diet": return <DietPage />;
       default: return <HomePage setPage={setPage} />;
     }
