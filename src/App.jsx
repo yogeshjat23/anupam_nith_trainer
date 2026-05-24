@@ -36,6 +36,176 @@ const globalCSS = `
   @keyframes barFill { from{width:0} to{width:var(--w)} }
   @keyframes countUp { from{opacity:0} to{opacity:1} }
   @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+
+  /* =========================
+   MOBILE RESPONSIVE FIXES
+========================= */
+
+@media (max-width: 992px) {
+
+  /* HERO */
+  .hero-grid,
+  section > div[style*="grid-template-columns:1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  h1 {
+    font-size: clamp(42px, 12vw, 72px) !important;
+    line-height: 1 !important;
+  }
+
+  h2 {
+    font-size: clamp(36px, 8vw, 52px) !important;
+  }
+
+  /* TRAINER IMAGE */
+  .hero-image-wrapper {
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-image-wrapper > div {
+    width: 100% !important;
+    max-width: 340px !important;
+    height: auto !important;
+  }
+
+  /* STATS */
+  .stats-grid,
+  div[style*="grid-template-columns:repeat(4,1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+
+  /* PROGRAMS */
+  .program-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* CONTACT */
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* FOOTER */
+  footer div[style*="grid-template-columns:2fr 1fr 1fr 1fr"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 30px !important;
+  }
+
+  /* GALLERY */
+  #gallery div[style*="columns"] {
+    columns: 2 !important;
+  }
+}
+
+
+@media (max-width: 768px) {
+
+  section {
+    padding: 70px 20px !important;
+  }
+
+  nav {
+    padding: 0 20px !important;
+  }
+
+  p {
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+  }
+
+  /* HERO BUTTONS */
+  button {
+    width: 100%;
+  }
+
+  /* HERO IMAGE */
+  .hero-image-wrapper > div {
+    max-width: 100% !important;
+  }
+
+  /* TRANSFORMATIONS */
+  div[style*="repeat(auto-fill,minmax(300px,1fr))"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* PROGRAMS */
+  div[style*="repeat(auto-fill,minmax(280px,1fr))"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* BMI / CALCULATOR PAGES */
+  div[style*="grid-template-columns:1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  div[style*="repeat(3,1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  div[style*="repeat(4,1fr)"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* GALLERY */
+  #gallery div[style*="columns"] {
+    columns: 1 !important;
+  }
+
+  /* FOOTER */
+  footer div[style*="grid-template-columns:2fr 1fr 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+@media (max-width: 480px) {
+
+  h1 {
+    font-size: 38px !important;
+  }
+
+  h2 {
+    font-size: 34px !important;
+  }
+
+  .desktop-nav {
+    display: none !important;
+  }
+
+  .mobile-menu-btn {
+    display: block !important;
+  }
+
+  /* STATS */
+  div[style*="repeat(4,1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* BEFORE AFTER */
+  div[style*="grid-template-columns:1fr 1fr"][style*="height: 260"] {
+    grid-template-columns: 1fr !important;
+    height: auto !important;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  /* CARD PADDING */
+  .card,
+  div[style*="padding:\"28px 24px\""] {
+    padding: 20px !important;
+  }
+}
 `;
 
 // ─── UTILITY HOOKS ───────────────────────────────────────────────
@@ -207,7 +377,7 @@ function Hero({ setPage }) {
         repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(232,0,42,0.04) 80px, rgba(232,0,42,0.04) 81px)`, pointerEvents:"none" }} />
       {/* Cinematic red glow */}
       <div style={{ position:"absolute", top:"50%", right:"15%", transform:"translateY(-50%)", width:500, height:500, borderRadius:"50%", background:`radial-gradient(circle, rgba(232,0,42,0.12) 0%, transparent 70%)`, pointerEvents:"none" }} />
-      <div style={{ position:"relative", maxWidth:1200, margin:"0 auto", padding:"0 4vw", paddingTop:100, display:"grid", gridTemplateColumns:"1fr 1fr", gap:40, alignItems:"center" }}>
+      <div  className="hero-grid" style={{ position:"relative", maxWidth:1200, margin:"0 auto", padding:"0 4vw", paddingTop:100, display:"grid", gridTemplateColumns:"1fr 1fr", gap:40, alignItems:"center" }}>
         {/* LEFT */}
         <div>
           <div style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(232,0,42,0.1)", border:`1px solid ${C.borderHot}`, padding:"6px 16px", borderRadius:2, marginBottom:24 }}>
@@ -370,7 +540,7 @@ function About() {
     <section id="about" ref={ref} style={{ padding:"100px 4vw", background:C.bg }}>
       <div style={{ maxWidth:1200, margin:"0 auto", opacity:vis?1:0, transform:vis?"none":"translateY(30px)", transition:"all 0.8s ease" }}>
         <Tag>About the Coach</Tag>
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:60, alignItems:"center" }}>
+        <div className="about-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:60, alignItems:"center" }}>
           <div>
             <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:58, lineHeight:0.95, marginBottom:20 }}>
               Built From <span style={{ color:C.red }}>Passion.</span><br />Driven By <span style={{ color:C.red }}>Results.</span>
@@ -869,7 +1039,7 @@ function Programs() {
         <Tag>Programs & Pricing</Tag>
         <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:58, marginBottom:8 }}>Choose Your <span style={{ color:C.red }}>Battle Plan</span></h2>
         <RedLine />
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))", gap:20, marginTop:40 }}>
+        <div  className="program-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))", gap:20, marginTop:40 }}>
           {programs.map(p => <ProgramCard key={p.name} p={p} />)}
         </div>
       </div>
@@ -1162,7 +1332,7 @@ function Contact() {
   const inputStyle = { width:"100%", background:C.bg3, border:`1px solid ${C.border}`, color:C.text, padding:"12px 16px", borderRadius:2, fontSize:14, outline:"none", marginTop:6 };
   return (
     <section id="contact" ref={ref} style={{ padding:"100px 4vw", background:C.bg2 }}>
-      <div style={{ maxWidth:1200, margin:"0 auto", opacity:vis?1:0, transition:"opacity 0.8s", display:"grid", gridTemplateColumns:"1fr 1fr", gap:60 }}>
+      <div  className="contact-grid" style={{ maxWidth:1200, margin:"0 auto", opacity:vis?1:0, transition:"opacity 0.8s", display:"grid", gridTemplateColumns:"1fr 1fr", gap:60 }}>
         <div>
           <Tag>Get In Touch</Tag>
           <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:58, lineHeight:0.95, marginBottom:20 }}>
